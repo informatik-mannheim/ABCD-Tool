@@ -21,7 +21,7 @@ class FastFastaLoader(val inputStream: InputStream) {
   }
 
   // TODO only DNA is supported yet.
-  val compoundSet = DNACompoundSet.getDNACompoundSet
+  val compoundSet = ModifiedDNACompoundSet.getDNACompoundSet()
 
 
 
@@ -30,6 +30,8 @@ class FastFastaLoader(val inputStream: InputStream) {
     * are a sequence.
     */
   val fastaEntries = {
+    compoundSet.addCompound("M","M")
+    compoundSet.addCompound("R","R")
     val rd = new BufferedReader(new InputStreamReader(inputStream))
     var inputLine = rd.readLine()
     val map = new util.HashMap[String, Sequence[NucleotideCompound]]()
@@ -39,14 +41,14 @@ class FastFastaLoader(val inputStream: InputStream) {
        // val read = readUntilNextHeader(rd);
 
         var read = rd.readLine()
-        var readSequence = "" + read
+        var readSequence = new StringBuilder().append(read)
         while(read != null && !read.startsWith(">")){
 
-          readSequence = readSequence + read;
+          readSequence.append(read);
           read = rd.readLine()
         }
         //val read = rd.readLine() // ... also read the sequence.
-      val seq = new BasicSequence(readSequence, compoundSet)
+      val seq = new BasicSequence(readSequence.toString(), compoundSet)
         map.put(inputLine.trim, seq)
         inputLine = read // Next header...
       }

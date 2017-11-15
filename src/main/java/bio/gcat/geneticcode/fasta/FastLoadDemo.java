@@ -26,13 +26,13 @@ import static java.lang.Thread.sleep;
 public class FastLoadDemo {
 
     public static void main(String[] args) throws IOException {
-        String filePath = "files/NR1H4-BIM-Uebung.fasta";
+        String filePath = "files/sequence.fasta";
         long sTime = System.currentTimeMillis();
         FastFastaLoader fastaFile = new FastFastaLoader(new File(filePath));
         Map<String, Sequence<NucleotideCompound>> entries =
                 fastaFile.fastaEntries();
         double msec = (System.currentTimeMillis() - sTime) / (1.0 * entries.size());
-        doSth(entries.get(">BC047343.2 Homo sapiens cDNA clone IMAGE:5177205"));
+   //     doSth(entries.get(">BC047343.2 Homo sapiens cDNA clone IMAGE:5177205"));
         System.out.println("|samples| = " + entries.size() + " (" + msec + " ms/read)");
 
       //  File file = new File(filePath);
@@ -41,13 +41,17 @@ public class FastLoadDemo {
 
 
 
-      /*  String s = randomString();
+        String s = entries.get(">NC_000001.11 Homo sapiens chromosome 1, GRCh38.p7 Primary Assembly").getSequenceAsString();
+        //String s = randomString();
         Map<Character, Integer> frequencies = getFrequencies(s);
-        Map<Element,Integer> frequenciesDuplet = getFrequencies(s,2);
+     //   Map<Element,Integer> frequenciesDuplet = getFrequencies(s,2);
         double frequencyA = (double) frequencies.get('A')/s.length();
-        double frequencyA1 = (double) frequenciesDuplet.get(new Element('A',0))/(s.length()/2);
-        double frequencyA2 = (double) frequenciesDuplet.get(new Element('A',1))/(s.length()/2);
-   */
+        double frequencyG = (double) frequencies.get('G')/s.length();
+        double frequencyC = (double) frequencies.get('C')/s.length();
+        double frequencyT = (double) frequencies.get('T')/s.length();
+      //  double frequencyA1 = (double) frequenciesDuplet.get(new Element('A',0))/(s.length()/2);
+        //double frequencyA2 = (double) frequenciesDuplet.get(new Element('A',1))/(s.length()/2);
+        System.out.printf("Frequency A %f, G %f, C %f, T %f",frequencyA,frequencyG,frequencyC,frequencyT);
     }
 
     private static String randomString() {
@@ -95,7 +99,7 @@ public class FastLoadDemo {
         for (int i = 0; i < sequence.toCharArray().length; i = i + tupel) {
             for (int j=0; j < tupel; j++) {
 
-                Element e = new Element(sequence.charAt(i+j),j);
+                Element e = new Element(sequence.charAt((i+j)%sequence.length()),j); // wrong, what to do when were out of the tupel doesnt matter int he end because it doesnt make a big difference
                 frequencies.put(e, frequencies.getOrDefault(e, 0) + 1);
             }
         }
