@@ -26,7 +26,7 @@ import static java.lang.Thread.sleep;
 public class FastLoadDemo {
 
     public static void main(String[] args) throws IOException {
-        String filePath = "files/sequence.fasta";
+        String filePath = "files/demo.fasta";
         long sTime = System.currentTimeMillis();
         FastFastaLoader fastaFile = new FastFastaLoader(new File(filePath));
         Map<String, Sequence<NucleotideCompound>> entries =
@@ -41,49 +41,45 @@ public class FastLoadDemo {
 
 
 
-        String s = entries.get(">NC_000001.11 Homo sapiens chromosome 1, GRCh38.p7 Primary Assembly").getSequenceAsString();
+        String s = entries.entrySet().iterator().next().getValue().getSequenceAsString();
         //String s = randomString();
         Map<Character, Integer> frequencies = getFrequencies(s);
-     //   Map<Element,Integer> frequenciesDuplet = getFrequencies(s,2);
+        Map<Element,Integer> frequenciesDuplet = getFrequencies(s,2);
+        Map<Element,Integer> frequenciesTriplet = getFrequencies(s,3);
         double frequencyA = (double) frequencies.get('A')/s.length();
         double frequencyG = (double) frequencies.get('G')/s.length();
         double frequencyC = (double) frequencies.get('C')/s.length();
         double frequencyT = (double) frequencies.get('T')/s.length();
-      //  double frequencyA1 = (double) frequenciesDuplet.get(new Element('A',0))/(s.length()/2);
+     //  double frequencyA1 = (double) frequenciesDuplet.get(new Element('A',0))/(s.length()/2);
         //double frequencyA2 = (double) frequenciesDuplet.get(new Element('A',1))/(s.length()/2);
+
+
+        Output.getAnalyzedTupels().add(frequenciesDuplet);
+        Output.getAnalyzedTupels().add(frequenciesTriplet);
+
+        //Output.getAsTable();
+        System.out.println(Output.outputAsLatexTable());
         System.out.printf("Frequency A %f, G %f, C %f, T %f",frequencyA,frequencyG,frequencyC,frequencyT);
     }
 
-    private static String randomString() {
-        String s = "";
-        for (int i = 0; i < 100000; i++) {
+    private static String randomString(int length) {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < length; i++) {
             double number = Math.random();
             if (number < 0.30) {
-                s += "A";
+                s.append("A");
             } else if (number < 0.6) {
-                s += "T";
+                s.append("T");
             } else if (number < 0.8) {
-                s += "G";
+                s.append("G");
             } else {
-                s += "C";
+                s.append("C");
             }
         }
-        return s;
+        return s.toString();
     }
 
 
-    static void doSth(Sequence<NucleotideCompound> sequence) {
-
-        sequence.getAsList();
-        sequence.getLength();
-        try {
-            sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //TODO: Find a way to give parameters like duplet, triplet etc elegantly
     static Map<Character, Integer> getFrequencies(String sequence) {
 
         Map<Character, Integer> frequencies = new HashMap<>();
@@ -96,10 +92,10 @@ public class FastLoadDemo {
     static Map<Element, Integer> getFrequencies(String sequence, int tupel) {
 
         Map<Element, Integer> frequencies = new HashMap<>();
-        for (int i = 0; i < sequence.toCharArray().length; i = i + tupel) {
+        for (int i = 0; i < sequence.length(); i = i + tupel) {
             for (int j=0; j < tupel; j++) {
 
-                Element e = new Element(sequence.charAt((i+j)%sequence.length()),j); // wrong, what to do when were out of the tupel doesnt matter int he end because it doesnt make a big difference
+                Element e = new Element(sequence.charAt((i+j)%sequence.length()),j);// this will add a few wrong values if the length is not dividable by the tupel-length. That doesn' make a difference because of the sheer number of values
                 frequencies.put(e, frequencies.getOrDefault(e, 0) + 1);
             }
         }
