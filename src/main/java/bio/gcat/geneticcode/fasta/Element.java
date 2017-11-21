@@ -9,6 +9,10 @@ public class Element {
         this.pos = pos;
     }
 
+    public char getBase() {
+        return base;
+    }
+
     @Override
     public String toString() {
         return "Element{" +

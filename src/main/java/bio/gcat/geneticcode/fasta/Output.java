@@ -33,7 +33,7 @@ public class Output {
                     if (row < analyzedTupels.get(column / 2).size()) {
 
 
-                        table[column][row] = "$P_" + (column / 2 + 1) + "(" + elements[row % 4] + "_" + (row / 4 + 1) + ")=$";
+                        table[column][row] = "P_" + (column / 2 + 1) + "(" + elements[row % 4] + "_" + (row / 4 + 1) + ")=";
                     }
                 } else {
                     Element current = new Element(elements[row % 4], row / 4);
@@ -73,7 +73,14 @@ public class Output {
             output.append("\t");
             for (int column = 0; column < table.length; column++) {
                 if (table[column][row] != null) {
-                    output.append(table[column][row]);
+                    if(column%2 ==0){
+                        output.append("$");
+                        output.append(table[column][row]);
+                        output.append("$");
+                    }else{
+
+                        output.append(table[column][row]);
+                    }
                 }
 
                 if (column != table.length - 1) {
@@ -87,6 +94,30 @@ public class Output {
         output.append("\\end{tabular} ");
 
         return output.toString();
+    }
+
+    /**
+     * from https://stackoverflow.com/a/34738509 (also on web archive)
+     * @return
+     */
+    public static String toHTML(){
+        String[][] data = getAsTable();
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table>\n");
+        for(int i = 0; i < getAnalyzedTupels().size(); i++){
+            int sizeOfTheFragment = getAnalyzedTupels().get(i).size()/4;
+            sb.append("\t\t<th>" + sizeOfTheFragment + "</th>\n");
+            sb.append("\t\t<th/>\n");
+        }
+        for(int row = 0; row < data[0].length; row++){
+            sb.append("\t<tr>\n");
+            for(int col = 0; col < data.length; col++){
+                sb.append("\t\t<td>" + data[col][row] + "</td>\n");
+            }
+            sb.append("\t</tr>\n");
+        }
+        sb.append("</table>");
+        return sb.toString();
     }
 
 

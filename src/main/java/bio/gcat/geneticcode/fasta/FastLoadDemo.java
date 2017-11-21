@@ -12,8 +12,12 @@ import org.biojava.nbio.core.sequence.io.FileProxyProteinSequenceCreator;
 import org.biojava.nbio.core.sequence.io.GenericFastaHeaderParser;
 import org.biojava.nbio.core.sequence.template.Sequence;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,40 +30,41 @@ import static java.lang.Thread.sleep;
 public class FastLoadDemo {
 
     public static void main(String[] args) throws IOException {
-        String filePath = "files/demo.fasta";
+        String filePath = "files/sequence.fasta";
         long sTime = System.currentTimeMillis();
         FastFastaLoader fastaFile = new FastFastaLoader(new File(filePath));
         Map<String, Sequence<NucleotideCompound>> entries =
                 fastaFile.fastaEntries();
         double msec = (System.currentTimeMillis() - sTime) / (1.0 * entries.size());
-   //     doSth(entries.get(">BC047343.2 Homo sapiens cDNA clone IMAGE:5177205"));
         System.out.println("|samples| = " + entries.size() + " (" + msec + " ms/read)");
 
-      //  File file = new File(filePath);
-        //LinkedHashMap<String, DNASequence> sequence;
-          //sequence = FastaReaderHelper.readFastaDNASequence(file);
 
 
 
         String s = entries.entrySet().iterator().next().getValue().getSequenceAsString();
-        //String s = randomString();
-        Map<Character, Integer> frequencies = getFrequencies(s);
-        Map<Element,Integer> frequenciesDuplet = getFrequencies(s,2);
-        Map<Element,Integer> frequenciesTriplet = getFrequencies(s,3);
-        double frequencyA = (double) frequencies.get('A')/s.length();
-        double frequencyG = (double) frequencies.get('G')/s.length();
-        double frequencyC = (double) frequencies.get('C')/s.length();
-        double frequencyT = (double) frequencies.get('T')/s.length();
-     //  double frequencyA1 = (double) frequenciesDuplet.get(new Element('A',0))/(s.length()/2);
-        //double frequencyA2 = (double) frequenciesDuplet.get(new Element('A',1))/(s.length()/2);
+       // String s = randomString(500000000);
+
+     // for(int j = 1; j<=20 ; j++){
+        int[] toCheck = {1,10};
+       for(int j : toCheck){
+            long timeNow = System.currentTimeMillis();
+            Map<Element, Integer> frequencies = getFrequencies(s,j);
+            Output.getAnalyzedTupels().add( frequencies);
+            System.out.println("done with " +j + "it took : "+  (System.currentTimeMillis()-timeNow) + "ms");
+
+        }
+
+        PrintWriter out = new PrintWriter(new Timestamp(System.currentTimeMillis())+ "output.html");
+        out.println(Output.toHTML());
+        out.close();
+
+        PrintWriter tex = new PrintWriter(new Timestamp(System.currentTimeMillis())+"table.tex");
+        tex.println(Output.outputAsLatexTable());
+        tex.close();
 
 
-        Output.getAnalyzedTupels().add(frequenciesDuplet);
-        Output.getAnalyzedTupels().add(frequenciesTriplet);
-
-        //Output.getAsTable();
-        System.out.println(Output.outputAsLatexTable());
-        System.out.printf("Frequency A %f, G %f, C %f, T %f",frequencyA,frequencyG,frequencyC,frequencyT);
+        System.out.println("the calculation took " + ((System.currentTimeMillis()-sTime)/1000) + "seconds");
+//        System.out.printf("Frequency A %f, G %f, C %f, T %f",frequencyA,frequencyG,frequencyC,frequencyT);
     }
 
     private static String randomString(int length) {
@@ -96,7 +101,10 @@ public class FastLoadDemo {
             for (int j=0; j < tupel; j++) {
 
                 Element e = new Element(sequence.charAt((i+j)%sequence.length()),j);// this will add a few wrong values if the length is not dividable by the tupel-length. That doesn' make a difference because of the sheer number of values
-                frequencies.put(e, frequencies.getOrDefault(e, 0) + 1);
+                if(e.getBase() =='A' || e.getBase() =='T' || e.getBase() =='G' || e.getBase() =='C' ){
+                    frequencies.put(e, frequencies.getOrDefault(e, 0) + 1);
+                }
+
             }
         }
         return frequencies;
