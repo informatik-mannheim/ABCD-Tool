@@ -1,5 +1,9 @@
 package bio.gcat.geneticcode.fasta;
 
+/**
+ * Our analyzed value,
+ * saving the letter and position
+ */
 public class Element {
     char base;
     int pos;

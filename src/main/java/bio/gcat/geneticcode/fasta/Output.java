@@ -3,22 +3,30 @@ package bio.gcat.geneticcode.fasta;
 import java.util.*;
 
 public class Output {
-    private static List<Map<Element, Integer>> analyzedTupels = new ArrayList<>();
+    private  List<Map<Element, Integer>> analyzedTupels ;
+    private List<Analysis> analyses ;
 
-    public static List<Map<Element, Integer>> getAnalyzedTupels() {
+
+
+    public Output() {
+       analyzedTupels= new ArrayList<>() ;
+       analyses= new ArrayList<>();
+    }
+
+    public  List<Map<Element, Integer>> getAnalyzedTupels() {
         return analyzedTupels;
     }
 
 
-    public static String[][] getAsTable() {
+    public  String[][] getAsTable() {
 
-
+/* only needed if lengths in input are not in ascending order
         analyzedTupels.sort(new Comparator<Map<Element, Integer>>() {
             @Override
             public int compare(Map<Element, Integer> o1, Map<Element, Integer> o2) {
                 return o1.entrySet().size() - o2.entrySet().size();
             }
-        });
+        });*/
 
         int sequenceLength = 0;
         for (Element e : analyzedTupels.get(0).keySet()) {
@@ -33,12 +41,12 @@ public class Output {
                     if (row < analyzedTupels.get(column / 2).size()) {
 
 
-                        table[column][row] = "P_" + (column / 2 + 1) + "(" + elements[row % 4] + "_" + (row / 4 + 1) + ")=";
+                        table[column][row] = "P_{" + (analyses.get(column/2).getTupel()) + "}(" + elements[row % 4] + "_{" + (row / 4 + 1) + "})=";
                     }
                 } else {
                     Element current = new Element(elements[row % 4], row / 4);
                     double relativeFrequency = ((double)analyzedTupels.get(column / 2).getOrDefault(current, 0));
-                    int tupelLength = analyzedTupels.get(column/2).size()/4;
+                    int tupelLength = analyses.get(column/2).getTupel();
                     relativeFrequency = relativeFrequency / (sequenceLength/tupelLength);
 
                     if (relativeFrequency == 0) {
@@ -61,7 +69,7 @@ public class Output {
     }
 
 
-    public static String outputAsLatexTable() {
+    public  String outputAsLatexTable() {
         String[][] table = getAsTable();
         StringBuilder output = new StringBuilder();
         output.append("\\begin{tabular}{");
@@ -100,12 +108,15 @@ public class Output {
      * from https://stackoverflow.com/a/34738509 (also on web archive)
      * @return
      */
-    public static String toHTML(){
+    public  String toHTML(){
         String[][] data = getAsTable();
         StringBuilder sb = new StringBuilder();
+
+        sb.append(minMaxAverageTable()); // new part of output
+
         sb.append("<table>\n");
         for(int i = 0; i < getAnalyzedTupels().size(); i++){
-            int sizeOfTheFragment = getAnalyzedTupels().get(i).size()/4;
+            int sizeOfTheFragment = analyses.get(i).getTupel();
             sb.append("\t\t<th>" + sizeOfTheFragment + "</th>\n");
             sb.append("\t\t<th/>\n");
         }
@@ -120,12 +131,20 @@ public class Output {
         return sb.toString();
     }
 
+    private String minMaxAverageTable() {
+        //TODO: Think about how to get the output
+        return "";
+    }
+
+    public  String toBarChart(){
+        String[][] data = getAsTable();
+        StringBuilder sb = new StringBuilder();
+        return null;
+    }
 
 
-
-
-
-
-
-
+    public void addAnalysis(Analysis analysis) {
+        analyzedTupels.add(analysis.getFrequencies());
+        analyses.add(analysis);
+    }
 }
