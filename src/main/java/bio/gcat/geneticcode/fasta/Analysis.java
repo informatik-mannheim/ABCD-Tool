@@ -11,6 +11,7 @@ public class Analysis {
     private Map<Element, Integer> frequenciesMap;
     private int[] frequencies;
 
+
     public Analysis(String sequence, int tupel) {
         this.sequence = sequence;
         this.tupel = tupel;

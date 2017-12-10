@@ -5,11 +5,13 @@ import java.util.*;
 public class Output {
     private  List<Map<Element, Integer>> analyzedTupels ;
     private List<Analysis> analyses ;
+    private String name;
 
 
 
-    public Output() {
-       analyzedTupels= new ArrayList<>() ;
+    public Output(String name) {
+        this.name = name;
+        analyzedTupels= new ArrayList<>() ;
        analyses= new ArrayList<>();
     }
 
@@ -146,5 +148,13 @@ public class Output {
     public void addAnalysis(Analysis analysis) {
         analyzedTupels.add(analysis.getFrequencies());
         analyses.add(analysis);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -36,7 +36,7 @@ class FastFastaLoader(val inputStream: InputStream) {
     var inputLine = rd.readLine()
     val map = new util.HashMap[String, Sequence[NucleotideCompound]]()
 
-    while (inputLine != null) { //TODO: write the last header with the sequence that happened so far. Write all the DNA into one string and add it as the CompoundSet
+    while (inputLine != null) {
       if (inputLine.startsWith(">")) { // Recognized a header?
        // val read = readUntilNextHeader(rd);
 
