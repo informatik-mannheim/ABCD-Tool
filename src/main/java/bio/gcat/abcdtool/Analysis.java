@@ -11,6 +11,10 @@ public class Analysis {
      */
     private String sequence;
 
+    public String getSequence() {
+        return sequence;
+    }
+
     /**
      * the size of the n-plet
      */
@@ -28,23 +32,34 @@ public class Analysis {
 
 
     public Analysis(String sequence, int tupel) {
+        if(sequence.length()/2<tupel){
+            throw new IllegalArgumentException("the tupel is too big (probably)");
+        }
         this.sequence = sequence;
         this.tupel = tupel;
         this.frequencies = calculateFrequencyArray();
         this.frequenciesMap = calculateFrequenciesFast(frequencies);
     }
-public int[] getMaxima(){
+
+    /**
+     * calculate the maximum of an Analysis (for each of the nucleotides, at a certain tupel length)
+     * @return an array with the maximum of {A,T,G,C}
+     */
+    public double[] getMaxima(){
         //ATGC
-    int[] maxima = {0,0,0,0};
+    double[] maxima = {0,0,0,0};
     for(int i = 0;i<frequencies.length;i++){
         if(frequencies[i]>maxima[i%maxima.length]){
             maxima[i]= frequencies[i];
         }
     }
     return maxima;
-}
-public int[] getMinima(){
-    int[] minima = {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE};
+        /**
+         * calculate the minimum of an Analysis (for each of the nucleotides, at a certain tupel length)
+         * @return an array with the minimum of {A,T,G,C}
+         */}
+public double[] getMinima(){
+    double[] minima = {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE};
     for(int i = 0;i<frequencies.length;i++){
         if(frequencies[i]<minima[i%minima.length]){
             minima[i]= frequencies[i];
@@ -53,13 +68,21 @@ public int[] getMinima(){
     return minima;
 
 }
-public int[] getMedian(){
-     int[] median = {0,0,0,0};
-     int[][] valuesArrays = new int[4][frequencies.length/4];
+    /**
+     * calculate the median of an Analysis (for each of the nucleotides, at a certain tupel length)
+     * @return an array with the median of {A,T,G,C}
+     */
+public double[] getMedian(){
+     double[] median = {0,0,0,0};
+     double[][] valuesArrays = new double[4][frequencies.length/4];
+    for(int i=0;i<frequencies.length;i++){
+        valuesArrays[i%4][i/4]=frequencies[i];
+
+    }
      for(int i = 0;i<valuesArrays.length;i++) {
-         int[] values = valuesArrays[i];
+         double[] values = valuesArrays[i];
          Arrays.sort(values);
-         int medianHere;
+         double medianHere;
          if (valuesArrays.length % 2 == 0)
              medianHere = (int)(((double) values[values.length / 2] + (double) values[values.length / 2 - 1]) / 2);//TODO: rethink the casting
          else
@@ -69,14 +92,22 @@ public int[] getMedian(){
      }
      return median;
 }
-    public int[] getAverage(){
-        int[] average = {0,0,0,0};
-        int[][] valuesArrays = new int[4][frequencies.length/4];
+    /**
+     * calculate the average of an Analysis (for each of the nucleotides, at a certain tupel length)
+     * @return an array with the average of {A,T,G,C}
+     */
+    public double[] getAverage(){
+        double[] average = {0,0,0,0};
+        double[][] valuesArrays = new double[4][frequencies.length/4];
+        for(int i=0;i<frequencies.length;i++){
+            valuesArrays[i%4][i/4]=frequencies[i];
+
+        }
         for(int i = 0;i<valuesArrays.length;i++) {
-            int[] values = valuesArrays[i];
-            int sum=0;
-            int averageHere = 0;
-            for(int j : values){
+            double[] values = valuesArrays[i];
+            double sum=0;
+            double averageHere = 0;
+            for(double j : values){
                 sum+=j;
             }
             averageHere = sum/values.length;
@@ -93,14 +124,13 @@ public int[] getMedian(){
      * PN(A1), PN(T1),PN(G1),PN(C1),PN(A2),...
      * @return int[] with the Frequencies
      */
-    private int[] calculateFrequencyArray() {
+    public int[] calculateFrequencyArray() {
         char[] bases = {'A', 'T', 'G', 'C'};
         int differentKeys = bases.length; //Nucleotides
         int[] map = new int[differentKeys * tupel];
         int counter = 0;
         char[] sequenceArray = sequence.toCharArray();
 
-        loop:
         for (char c : sequenceArray) {
             int pos = 0;
             boolean skipper = false;
@@ -124,7 +154,7 @@ public int[] getMedian(){
             if (skipper) {
                 continue;
             }
-            map[(counter % tupel) * differentKeys + pos]++;
+            map[(counter % tupel) * differentKeys + pos]= map[(counter % tupel) * differentKeys + pos]+1;
             counter = (counter + 1);
         }
         return map;
@@ -136,7 +166,6 @@ public int[] getMedian(){
   }
 
 
-  @Deprecated
     public Map<Element, Integer> calculateFrequencies() {
 
         Map<Element, Integer> frequencies = new HashMap<>();

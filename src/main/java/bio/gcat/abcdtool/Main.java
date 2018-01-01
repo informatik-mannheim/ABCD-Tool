@@ -1,5 +1,6 @@
 package bio.gcat.abcdtool;
 
+import bio.gcat.abcdtool.output.Output;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.template.Sequence;
 
@@ -38,6 +39,7 @@ public class Main {
 
             int written = 0; //learned the hard way to set a maximum
              String sequence = map.getValue().getSequenceAsString();
+             tempfunction(sequence);
             //   String sequence = RandomStringGenerator.randomCovarianceString(250000000,false);
 
             Output output = new Output(name);
@@ -49,7 +51,6 @@ public class Main {
                 Analysis analysis = new Analysis(sequence, j);
                 output.addAnalysis(analysis);
                 System.out.println("done with " + j + "it took : " + (System.currentTimeMillis() - timeNow) + "ms");
-
             }
             if (written > 3) {//TODO : safety measure for now
                 //break;
@@ -58,6 +59,8 @@ public class Main {
 //                for (char illegalChar : ILLEGAL_CHARACTERS) {
 //                    name = name.replaceAll(String.valueOf(illegalChar), "");
 //                }
+                output.toScatterPlot();
+                output.toBarChart();
               name=  name.replaceAll(":|>|<", "");
                 File file = new File(name + File.separator + new Timestamp(System.currentTimeMillis()) + "output.html");
                 file.getParentFile().mkdirs();
@@ -77,6 +80,53 @@ public class Main {
             System.out.println("the calculation took " + ((System.currentTimeMillis() - sTime) / 1000) + "seconds");
         }
     }
+
+    private static void tempfunction(String sequence) {
+        char[] bases = {'A', 'T', 'G', 'C'};
+        int differentKeys = bases.length; //Nucleotides
+        int[] map = new int[differentKeys];
+        int counter = 0;
+        char[] sequenceArray = sequence.toCharArray();
+
+        for (char c : sequenceArray) {
+            int pos = 0;
+            boolean skipper = false;
+            switch (c) {
+                case 'A':
+                    pos = 0;
+                    break;
+                case 'T':
+                    pos = 1;
+                    break;
+                case 'G':
+                    pos = 2;
+                    break;
+                case 'C':
+                    pos = 3;
+                    break;
+                default:
+                    counter++;  //for example N or R or M etc
+                    skipper = true;
+            }
+            if (skipper) {
+                continue;
+            }
+            map[pos]= map[pos]+1;
+            counter = (counter + 1);
+        }
+        double a = map[0]/(double)sequenceArray.length;
+        double t = map[1]/(double)sequenceArray.length;
+        double g = map[2]/(double)sequenceArray.length;
+        double c = map[3]/(double)sequenceArray.length;
+        double total = a+t+g+c;
+        System.out.println(a);
+        System.out.println(t);
+        System.out.println(g);
+        System.out.println(c);
+        System.out.println(total);
+
+    }
+
 
 
 }

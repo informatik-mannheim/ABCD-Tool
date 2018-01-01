@@ -1,4 +1,8 @@
-package bio.gcat.abcdtool;
+package bio.gcat.abcdtool.output;
+
+import bio.gcat.abcdtool.Analysis;
+import bio.gcat.abcdtool.Element;
+import org.jfree.ui.RefineryUtilities;
 
 import java.util.*;
 
@@ -7,7 +11,9 @@ public class Output {
     private List<Analysis> analyses ;
     private String name;
 
-
+    public List<Analysis> getAnalyses() {
+        return analyses;
+    }
 
     public Output(String name) {
         this.name = name;
@@ -30,7 +36,7 @@ public class Output {
             }
         });*/
 
-        int sequenceLength = 0;
+        int sequenceLength = 0; // we cant just take the string length because of all the unknown bases
         for (Element e : analyzedTupels.get(0).keySet()) {
             sequenceLength += analyzedTupels.get(0).get(e);
         }
@@ -49,7 +55,7 @@ public class Output {
                     Element current = new Element(elements[row % 4], row / 4);
                     double relativeFrequency = ((double)analyzedTupels.get(column / 2).getOrDefault(current, 0));
                     int tupelLength = analyses.get(column/2).getTupel();
-                    relativeFrequency = relativeFrequency / (sequenceLength/tupelLength);
+                    relativeFrequency = relativeFrequency / ((double)sequenceLength/(double)tupelLength);
 
                     if (relativeFrequency == 0) {
                         table[column][row] = "";
@@ -138,10 +144,24 @@ public class Output {
         return "";
     }
 
-    public  String toBarChart(){
-        String[][] data = getAsTable();
-        StringBuilder sb = new StringBuilder();
-        return null;
+    public  void toBarChart(){
+        final Barchart demo = new Barchart("A Chart",this,'A');
+        demo.pack();
+        RefineryUtilities.centerFrameOnScreen(demo);
+        demo.setVisible(true);
+    }
+    public  void toScatterPlot(){
+        final Scatterplot demo = new Scatterplot("A Chart",this,'A');
+        demo.pack();
+        RefineryUtilities.centerFrameOnScreen(demo);
+        demo.setVisible(true);
+
+        final Scatterplot demo2 = new Scatterplot("G Chart",this,'G');
+        demo2.pack();
+        RefineryUtilities.centerFrameOnScreen(demo2);
+        demo2.setVisible(true);
+
+
     }
 
 
