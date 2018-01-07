@@ -49,6 +49,7 @@ import java.awt.Dimension;
 import java.util.List;
 
 import bio.gcat.abcdtool.Analysis;
+import bio.gcat.abcdtool.Element;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -110,7 +111,6 @@ public class Barchart extends ApplicationFrame {
     }
 
     /**
-     * only for letter a so far
      *
      * @param o
      * @param base
@@ -121,6 +121,12 @@ public class Barchart extends ApplicationFrame {
         String[] tupelLengths = new String[analyses.size()];
         for (int i = 0; i < tupelLengths.length; i++) {
             tupelLengths[i] = "" + analyses.get(i).getTupel();
+        }
+
+        int sequenceLength=0;
+        for(Element e : analyses.get(0).getFrequencies().keySet()){
+            sequenceLength+= analyses.get(0).getFrequencies().get(e);
+
         }
         final String series = "" + base;
         int index = 0;
@@ -141,7 +147,7 @@ public class Barchart extends ApplicationFrame {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         int i = 0;
         for (Analysis a : analyses) {
-            double value = a.getAverage()[index] / (a.getSequence().length() / a.getTupel()); //TODO: create a graph for sth other than A
+            double value = a.getAverage()[index] / (sequenceLength / a.getTupel()); //TODO: create a graph for sth other than A
             dataset.addValue(value, series, tupelLengths[i++]);
         }
         return dataset;

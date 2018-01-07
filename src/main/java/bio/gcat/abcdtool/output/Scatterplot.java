@@ -13,6 +13,8 @@ import bio.gcat.abcdtool.output.Output;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -24,6 +26,11 @@ import org.jfree.data.xy.XYSeriesCollection;
  * @author imssbora
  */
 public class Scatterplot extends JFrame {
+    public JFreeChart getChart() {
+        return chart;
+    }
+
+    private JFreeChart chart;
 
     public Scatterplot(String title, Output o, char base) {
         super(title);
@@ -32,7 +39,7 @@ public class Scatterplot extends JFrame {
         XYDataset dataset = createDataset(o, base);
         String xAxis = "" + base;
         // Create chart
-        JFreeChart chart = ChartFactory.createScatterPlot(
+        chart = ChartFactory.createScatterPlot(
                 title, xAxis, "frequency", dataset, PlotOrientation.VERTICAL, false, false, false);
 
 
@@ -40,6 +47,15 @@ public class Scatterplot extends JFrame {
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setBackgroundPaint(new Color(255, 228, 196));
 
+//////////
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setRangeGridlinePaint(Color.white);
+
+        // customise the range axis...
+        final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setStandardTickUnits(NumberAxis.createStandardTickUnits());
+        rangeAxis.setAutoRangeIncludesZero(true);
+   //////////
 
         // Create Panel
         ChartPanel panel = new ChartPanel(chart);
@@ -55,17 +71,16 @@ public class Scatterplot extends JFrame {
         List<Analysis> analyses = o.getAnalyses();
 
 
-
         for (Analysis a : analyses) {
 //            double divident = (a.getSequence().length() / a.getTupel()); //false becuase we cant just take the secuence length
-                int sequenceLength = 0; // we cant just take the string length because of all the unknown bases
+            int sequenceLength = 0; // we cant just take the string length because of all the unknown bases
             for (Element e : a.getFrequencies().keySet()) {
                 sequenceLength += a.getFrequencies().get(e);
             }
-            double divident = sequenceLength/a.getTupel();
+            double divident = sequenceLength / a.getTupel();
             for (Element e : a.getFrequencies().keySet()) {
                 if (e.getBase() == base) {
-                    double value = a.getFrequencies().get(e)/ divident;
+                    double value = a.getFrequencies().get(e) / divident;
                     series1.add(a.getTupel(), value);
                 }
             }
