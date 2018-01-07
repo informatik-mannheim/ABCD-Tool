@@ -72,7 +72,6 @@ public class Scatterplot extends JFrame {
 
 
         for (Analysis a : analyses) {
-//            double divident = (a.getSequence().length() / a.getTupel()); //false becuase we cant just take the secuence length
             int sequenceLength = 0; // we cant just take the string length because of all the unknown bases
             for (Element e : a.getFrequencies().keySet()) {
                 sequenceLength += a.getFrequencies().get(e);
