@@ -1,20 +1,26 @@
-package bio.gcat.abcdtool;
+package bio.gcat.abcdtool.sequences.generatesequence;
 
-public class RandomStringGenerator {
+public class RandomStringGenerator implements RandomString {
     //AGCT
-    private static int[][] covariance = {
+    private static double[][] covariance = {
             {30, 28, 21, 21},
             {26, 32, 23, 19},
             {32, 9, 31, 28},
             {19, 31, 24, 26}};
-    private static int[][] coVarianceCG={
+    private static double[][] coVarianceCG={
             {21,38,27,14},
             {18,37,31,15},
             {20,23,36,21},
             {10,37,32,22}
     };
+    private static double[][] coVarianceGene1={
+            {32.654629485847264, 24.52450263153206, 17.292732418078985, 25.52813546454169},
+            {28.77818791311597, 25.963261582628183, 21.08700437255217, 24.171546131703675},
+            {34.89394017933991, 4.94258422999162, 25.942695290228157, 34.22078030044031},
+            {21.644705609667775, 24.978215563186823, 20.588717164464687, 32.788361662680715}
+    };
 
-    public static String randomCovarianceString(int length, boolean cgIsland) {
+    public String randomCovarianceString(int length, boolean cgIsland) {
         StringBuilder s = new StringBuilder();
         String digit = randomString(1);
         s.append(digit);
@@ -37,7 +43,7 @@ public class RandomStringGenerator {
                     break;
 
             }
-            int[] theseValues = cgIsland ? coVarianceCG[currentIndex] : covariance[currentIndex];
+            double[] theseValues = cgIsland ? coVarianceGene1[currentIndex] : coVarianceGene1[currentIndex];
             if (number*100 < theseValues[0]) {
                 s.append("A");
             } else if (number*100 < theseValues[0]+theseValues[1]) {
@@ -52,7 +58,8 @@ public class RandomStringGenerator {
         return s.toString();
     }
 
-    public static String randomString(int length) {
+    @Override
+    public String randomString(int length) {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < length; i++) {
             double number = Math.random();
