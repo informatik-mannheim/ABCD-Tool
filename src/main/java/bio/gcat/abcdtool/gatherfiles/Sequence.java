@@ -40,19 +40,23 @@ public class Sequence {
     String url;
 
     public String getSpecies() {
-        if (getName().contains("Homo sapiens")) {
+       return getSpecies(getName());
+    }
+
+    public static String getSpecies(String species){
+        if (species.contains("Homo sapiens")) {
             return "Homo sapiens";
-        } else if (getName().contains("Caenorhabditis elegans")) {
+        } else if (species.contains("Caenorhabditis elegans")) {
             return "Caenorhabditis elegans";
-        } else if (getName().contains("Arabidopsis thaliana")) {
+        } else if (species.contains("Arabidopsis thaliana")) {
             return "Arabidopsis thaliana";
-        } else if (getName().contains("Chlamydomonas reinhardtii")) {
+        } else if (species.contains("Chlamydomonas reinhardtii")) {
             return "Chlamydomonas reinhardtii";
-        } else if (getName().contains("Oryza sativa Japonica")) {
+        } else if (species.contains("Oryza")) {
             return "Oryza sativa Japonica";
         }
 
-        //could also say reutnr spliit("chromosome")[0] for most of them
+        //could also say return split("chromosome")[0] for most of them
         return "SomeSpecies";
     }
 }

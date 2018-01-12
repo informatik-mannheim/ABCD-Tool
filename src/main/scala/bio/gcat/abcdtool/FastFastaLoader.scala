@@ -30,8 +30,21 @@ class FastFastaLoader(val inputStream: InputStream) {
     * are a sequence.
     */
   val fastaEntries = {
-    compoundSet.addCompound("M","M")
-    compoundSet.addCompound("R","R")
+//    compoundSet.addCompound("M","M")
+//    compoundSet.addCompound("R","R")
+//    compoundSet.addCompound("Y","Y")
+//    compoundSet.addCompound("W","W")
+    var a = 0;
+
+    for( a <- 0 to 25){
+      var c = (a+ 'A').toChar
+      if(!(c== 'A'|| c =='T'|| c=='G'|| c=='C')){
+        compoundSet.addCompound(""+c, ""+c)
+
+        println( "Value of c: " + c );
+      }
+    }
+
     val rd = new BufferedReader(new InputStreamReader(inputStream))
     var inputLine = rd.readLine()
     val map = new util.HashMap[String, Sequence[NucleotideCompound]]()

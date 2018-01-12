@@ -34,8 +34,9 @@ if(line.trim().equals("")){
         }
         br.close();
         System.out.println(sequences);
-        for(int i = 0;i<2;i++){ //later for all sequences
-            downloadFileFromGenBank(sequences.get(i+18));
+        for(int i = 0;i<sequences.size();i++){ //later for all sequences
+            System.out.println("downloading file "+ sequences.get(i).getName());
+            downloadFileFromGenBank(sequences.get(i));
         }
         /*TODO: download all the files and put them into the folder: DownloadedSequences/speciesName/speciesChromosome/sequence.fasta and include a file with a link to the file in the folder next to the sequence
         and put a file with all the sequences into an extra file in the DownloadedSequences folder with the sequence List (all links and files)
@@ -57,6 +58,7 @@ if(line.trim().equals("")){
         if (!dstFile.exists()) {
             dstFolderFile.mkdirs();
         }
+
 
         try {
             URL url = new URL(urlString);

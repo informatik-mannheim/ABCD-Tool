@@ -79,7 +79,8 @@ public class Scatterplot extends JFrame {
             double divident = sequenceLength / a.getTupel();
             for (Element e : a.getFrequencies().keySet()) {
                 if (e.getBase() == base) {
-                    double value = a.getFrequencies().get(e) / divident;
+                    double value = (double)a.getFrequencies().get(e) / divident;
+
                     series1.add(a.getTupel(), value);
                 }
             }

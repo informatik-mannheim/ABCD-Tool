@@ -2,6 +2,7 @@ package bio.gcat.abcdtool.output;
 
 import bio.gcat.abcdtool.Analysis;
 import bio.gcat.abcdtool.Element;
+import bio.gcat.abcdtool.gatherfiles.Sequence;
 import org.jfree.ui.RefineryUtilities;
 
 import java.awt.*;
@@ -164,27 +165,40 @@ public class Output {
 
     public Scatterplot[] toScatterPlot() {
         final Scatterplot scatterplotA = new Scatterplot("A Chart", this, 'A');
-        scatterplotA.pack();
-        RefineryUtilities.centerFrameOnScreen(scatterplotA);
-        scatterplotA.setVisible(true);
+//        scatterplotA.pack();
+//        RefineryUtilities.centerFrameOnScreen(scatterplotA);
+//        scatterplotA.setVisible(true);
 
         final Scatterplot scatterplotT = new Scatterplot("T Chart", this, 'T');
-        scatterplotT.pack();
-        RefineryUtilities.centerFrameOnScreen(scatterplotT);
-        scatterplotT.setVisible(true);
+//        scatterplotT.pack();
+//        RefineryUtilities.centerFrameOnScreen(scatterplotT);
+//        scatterplotT.setVisible(true);
 
         final Scatterplot scatterplotG = new Scatterplot("G Chart", this, 'G');
-        scatterplotG.pack();
-        RefineryUtilities.centerFrameOnScreen(scatterplotG);
-        scatterplotG.setVisible(true);
+//        scatterplotG.pack();
+//        RefineryUtilities.centerFrameOnScreen(scatterplotG);
+//        scatterplotG.setVisible(true);
 
 
         final Scatterplot scatterplotC = new Scatterplot("C Chart", this, 'C');
-        scatterplotC.pack();
-        RefineryUtilities.centerFrameOnScreen(scatterplotC);
-        scatterplotC.setVisible(true);
+//        scatterplotC.pack();
+//        RefineryUtilities.centerFrameOnScreen(scatterplotC);
+//        scatterplotC.setVisible(true);
 
         return new Scatterplot[]{scatterplotA, scatterplotT, scatterplotG, scatterplotC};
+    }
+    private BoxWhiskerPlot[] toBoxWhiskerPlot() {
+        final BoxWhiskerPlot boxWhiskerPlotA = new BoxWhiskerPlot("A Chart", this, 'A');
+//        boxWhiskerPlotA.pack();
+//        RefineryUtilities.centerFrameOnScreen(boxWhiskerPlotA);
+//        boxWhiskerPlotA.setVisible(true);
+        final BoxWhiskerPlot boxWhiskerPlotT = new BoxWhiskerPlot("T Chart", this, 'T');
+
+        final BoxWhiskerPlot boxWhiskerPlotG = new BoxWhiskerPlot("G Chart", this, 'G');
+
+        final BoxWhiskerPlot boxWhiskerPlotC = new BoxWhiskerPlot("C Chart", this, 'C');
+
+        return new BoxWhiskerPlot[]{boxWhiskerPlotA, boxWhiskerPlotT, boxWhiskerPlotG, boxWhiskerPlotC};
     }
 
 
@@ -211,30 +225,79 @@ public class Output {
     }
 
     public void createOutputs() throws IOException {
-        prepareNameForWriting();
+       prepareNameForWriting();
+       createScatterplots();
+       createHTMLOutput();
+       createTexOutput();
+       createBoxWhisker();
+//        this.toBarChart();
+
+
+
+    }
+
+    private void createBoxWhisker() throws IOException {
+        BoxWhiskerPlot[] plots = this.toBoxWhiskerPlot();
+        for(BoxWhiskerPlot w : plots){
+            //toSVG oder PDF
+            SVGGraphics2D g2 = new SVGGraphics2D(600, 400);
+            Rectangle r = new Rectangle(0, 0, 600, 400);
+            w.getChart().draw(g2, r);
+            File f = new File(getOutputPath(name,"BoxWhisker") +w.getTitle()+ "SVGBoxWhisker.svg");
+            if(!f.exists()){
+                f.getParentFile().mkdirs();
+            }
+            SVGUtils.writeToSVG(f, g2.getSVGElement());
+
+        }
+    }
+
+
+
+    private void createTexOutput() throws FileNotFoundException {
+        File fileTex = new File(getOutputPath(name,"Latex") + "table.tex");
+        fileTex.getParentFile().mkdirs();
+
+        PrintWriter tex = new PrintWriter(fileTex);
+        tex.println(this.outputAsLatexTable());
+        tex.close();
+    }
+
+    private void createHTMLOutput() throws FileNotFoundException {
+        File file = new File(getOutputPath(name,"HTML")+  "output.html");
+        file.getParentFile().mkdirs();
+
+        PrintWriter out = new PrintWriter(file);
+        out.println(this.toHTML());
+        out.close();
+    }
+
+
+    private void createScatterplots() throws IOException {
         Scatterplot[] plots = this.toScatterPlot();
         for(Scatterplot s : plots){
             //toSVG oder PDF
             SVGGraphics2D g2 = new SVGGraphics2D(600, 400);
             Rectangle r = new Rectangle(0, 0, 600, 400);
             s.getChart().draw(g2, r);
-            File f = new File(name + File.separator + new Timestamp(System.currentTimeMillis()) +s.getTitle()+ "SVGBarChar.svg");
+            File f = new File(getOutputPath(name,"Scatterplot") +s.getTitle()+ "SVGScatterPlot.svg");
+            if(!f.exists()){
+                f.getParentFile().mkdirs();
+            }
             SVGUtils.writeToSVG(f, g2.getSVGElement());
 
         }
-        this.toBarChart();
-        File file = new File(name + File.separator + new Timestamp(System.currentTimeMillis()) + "output.html");
-        file.getParentFile().mkdirs();
 
-        PrintWriter out = new PrintWriter(file);
-        out.println(this.toHTML());
-        out.close();
+    }
 
-        File fileTex = new File(name + File.separator + new Timestamp(System.currentTimeMillis()) + "table.tex");
-        file.getParentFile().mkdirs();
+    private String getOutputPath(String name, String type){
+        String speciesName = Sequence.getSpecies(name);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeInMillis(System.currentTimeMillis());
+        String date = new Timestamp(System.currentTimeMillis()).toLocalDateTime().toLocalDate().toString();
+        String path = "Output"+File.separator + date + File.separator + speciesName + File.separator +
+                name + File.separator+type + File.separator;
+        return path;
 
-        PrintWriter tex = new PrintWriter(fileTex);
-        tex.println(this.outputAsLatexTable());
-        tex.close();
     }
 }

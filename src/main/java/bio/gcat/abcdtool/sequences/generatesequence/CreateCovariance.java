@@ -1,5 +1,7 @@
 package bio.gcat.abcdtool.sequences.generatesequence;
 
+import java.util.Arrays;
+
 public class CreateCovariance {
     String sequence;
     public double[][] createCovarianceMatrix(String sequence){
@@ -34,7 +36,10 @@ public class CreateCovariance {
             }
 
         }
-
+            System.out.println(Arrays.toString(frequency[0]));
+            System.out.println(Arrays.toString(frequency[1]));
+            System.out.println(Arrays.toString(frequency[2]));
+            System.out.println(Arrays.toString(frequency[3]));
         return frequency;
     }
 
