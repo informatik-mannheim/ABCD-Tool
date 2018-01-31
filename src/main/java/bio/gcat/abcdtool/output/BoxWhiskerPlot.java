@@ -34,7 +34,7 @@ public class BoxWhiskerPlot extends ApplicationFrame {
 
         final CategoryAxis xAxis = new CategoryAxis("Tupel");
         final NumberAxis yAxis = new NumberAxis("Value");
-//        yAxis.setAutoRangeIncludesZero(false);
+        yAxis.setAutoRangeIncludesZero(false);
 //        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
 //        renderer.setFillBox(false);
         BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
@@ -47,7 +47,7 @@ public class BoxWhiskerPlot extends ApplicationFrame {
         renderer.setLegendTextFont(0, legendFont);
         renderer.setLegendTextFont(1, legendFont);
         renderer.setMeanVisible(false);
-//        renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
          chart = new JFreeChart(

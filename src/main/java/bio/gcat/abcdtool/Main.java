@@ -32,15 +32,15 @@ public class Main {
 
         Set<Map.Entry<String, Sequence<NucleotideCompound>>> g = entries.entrySet();
         for (Map.Entry<String, Sequence<NucleotideCompound>> map : g) {
+            String sequence = map.getValue().getSequenceAsString();
 
             String name = map.getKey();
-//               String name = "Random Covariance";
 
-
-            String sequence = map.getValue().getSequenceAsString();
-//               String sequence = new RandomStringGenerator().randomCovarianceString(250000000,true);
 //double[][] covariance = new CreateCovariance().createCovarianceMatrix(sequence);
 
+            /// RANDOMNESS
+//            name = "Random Co 250kk";
+//            sequence = new RandomStringGenerator().randomCovarianceString(250000000,true);
 
             Output output = new Output(name);
             for (int j = 1; j <= 20; j++) {

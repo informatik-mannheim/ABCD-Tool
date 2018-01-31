@@ -20,7 +20,7 @@ public class RandomStringGenerator implements RandomString {
             {21.644705609667775, 24.978215563186823, 20.588717164464687, 32.788361662680715}
     };
 
-    public String randomCovarianceString(int length, boolean cgIsland) {
+    public String randomCovarianceString(int length, boolean cgIsland) { // TOOO : change from boolean to int or enum
         StringBuilder s = new StringBuilder();
         String digit = randomString(1);
         s.append(digit);
@@ -63,11 +63,11 @@ public class RandomStringGenerator implements RandomString {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < length; i++) {
             double number = Math.random();
-            if (number < 0.30) {
+            if (number < 0.291) {
                 s.append("A");
-            } else if (number < 0.6) {
+            } else if (number < 0.583) {
                 s.append("T");
-            } else if (number < 0.8) {
+            } else if (number < 0.792) {
                 s.append("G");
             } else {
                 s.append("C");

@@ -19,6 +19,16 @@ public class Analysis {
      * the size of the n-plet
      */
     private int tupel;
+
+    public int getSequenceLength() {
+
+        return sequenceLength;
+    }
+
+    /**
+     * length of the sequence without the unknown bases
+     */
+    private int sequenceLength;
     /**
      * a map containing an Element as a key and the frequency of that Element in the sequence
      */
@@ -153,6 +163,8 @@ public double[] getMedian(){
             }
             if (skipper) {
                 continue;
+            }else{
+                sequenceLength++;
             }
             map[(counter % tupel) * differentKeys + pos]= map[(counter % tupel) * differentKeys + pos]+1;
             counter = (counter + 1);
