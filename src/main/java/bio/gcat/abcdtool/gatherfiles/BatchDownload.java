@@ -2,11 +2,9 @@ package bio.gcat.abcdtool.gatherfiles;
 
 
 import org.apache.commons.io.FileUtils;
-import scala.collection.Seq;
 
 import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 public class BatchDownload {

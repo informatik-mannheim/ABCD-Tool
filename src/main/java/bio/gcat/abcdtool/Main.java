@@ -1,16 +1,12 @@
 package bio.gcat.abcdtool;
 
 import bio.gcat.abcdtool.output.Output;
-import bio.gcat.abcdtool.sequences.generatesequence.CreateCovariance;
-import bio.gcat.abcdtool.sequences.generatesequence.RandomStringGenerator;
+import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.template.Sequence;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,8 +35,15 @@ public class Main {
 //double[][] covariance = new CreateCovariance().createCovarianceMatrix(sequence);
 
             /// RANDOMNESS
-//            name = "Random Co 250kk";
-//            sequence = new RandomStringGenerator().randomCovarianceString(250000000,true);
+//            name = "Random 250 mio";
+//            sequence = new RandomStringGenerator().randomString(250000000);
+//
+//            File fileTex = new File("Output/random.fasta");
+//            fileTex.getParentFile().mkdirs();
+//
+//            PrintWriter tex = new PrintWriter(fileTex);
+//            tex.println(sequence);
+//            tex.close();
 
             Output output = new Output(name);
             for (int j = 1; j <= 20; j++) {

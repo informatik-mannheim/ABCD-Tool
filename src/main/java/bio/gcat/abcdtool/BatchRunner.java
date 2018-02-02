@@ -11,7 +11,7 @@ public class BatchRunner {
      *
      * @param args Folder or file names.
      */
-    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException {
+    public static void main(String[] args) {
         for (String s : args) {
             File f = new File(s);
 

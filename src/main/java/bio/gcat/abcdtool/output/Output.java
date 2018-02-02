@@ -6,10 +6,7 @@ import bio.gcat.abcdtool.gatherfiles.Sequence;
 import org.jfree.ui.RefineryUtilities;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.List;
@@ -215,26 +212,81 @@ public class Output {
         this.name = name;
     }
 
+    public static String prepareNameForWriting(String name ) {
+
+        name = name.replaceAll(":|>|<", "");
+        return name;
+    }
     public void prepareNameForWriting() {
+        name = prepareNameForWriting(name);
         //char[] ILLEGAL_CHARACTERS = { '\n', '\r', '\t', '\0', '\f', '`', '?', '*',  '<', '>', '|', '\"', ':'};
 
 //                for (char illegalChar : ILLEGAL_CHARACTERS) {
 //                    name = name.replaceAll(String.valueOf(illegalChar), "");
 //                }
-        name = name.replaceAll(":|>|<", "");
     }
 
     public void createOutputs() throws IOException {
        prepareNameForWriting();
        createScatterplots();
        createHTMLOutput();
-       createTexOutput();
+//       createTexOutput();
        createBoxWhisker();
+       createFileA();
+       createSkewFile();
 //        this.toBarChart();
 
 
 
     }
+    private void createFileA() throws FileNotFoundException {
+        File f = new File(getOutputPathAfile()+ "A.txt");
+        if(!f.exists()){
+            f.getParentFile().mkdirs();
+        }
+        PrintWriter out = new PrintWriter(new FileOutputStream(
+                f,
+                true ));
+        double frequency =  this.getAnalyses().get(0).getFrequencies().get(new Element('A',0));
+        frequency = frequency / this.analyses.get(0).getSequenceLength();
+        out.println(this.getName() + " : "+frequency);
+        out.close();
+
+    }
+
+    private void createSkewFile() throws FileNotFoundException {
+        File fileAT = new File(getOutputPathAfile()+ "ATSkew.txt");
+        File fileGC = new File(getOutputPathAfile()+ "GCSkew.txt");
+        if(!fileAT.exists()){
+            fileAT.getParentFile().mkdirs();
+        }
+        if(!fileGC.exists()){
+            fileGC.getParentFile().mkdirs();
+        }
+        PrintWriter outGC = new PrintWriter(new FileOutputStream(
+                fileGC,
+                true ));
+        PrintWriter outAT = new PrintWriter(new FileOutputStream(
+                fileAT,
+                true ));
+
+
+        double frequencyA =  this.getAnalyses().get(0).getFrequencies().get(new Element('A',0));
+        double frequencyT =  this.getAnalyses().get(0).getFrequencies().get(new Element('T',0));
+        double frequencyG =  this.getAnalyses().get(0).getFrequencies().get(new Element('G',0));
+        double frequencyC =  this.getAnalyses().get(0).getFrequencies().get(new Element('C',0));
+
+        double frequencyAT =  (frequencyA- frequencyT) / (frequencyA+frequencyT);
+        double frequencyGC =  (frequencyC- frequencyG) / (frequencyC+frequencyG);
+
+        outAT.println(this.getName() + " : "+ frequencyAT);
+        outAT.close();
+
+        outGC.println(this.getName() + " : "+ frequencyGC);
+        outGC.close();
+
+    }
+
 
     private void createBoxWhisker() throws IOException {
         BoxWhiskerPlot[] plots = this.toBoxWhiskerPlot();
@@ -290,7 +342,7 @@ public class Output {
 
     }
 
-    private String getOutputPath(String name, String type){
+    public String getOutputPath(String name, String type){
         String speciesName = Sequence.getSpecies(name);
 //        Calendar calendar = Calendar.getInstance();
 //        calendar.setTimeInMillis(System.currentTimeMillis());
@@ -298,6 +350,12 @@ public class Output {
         String path = "Output"+File.separator + date + File.separator + speciesName + File.separator +
                 name + File.separator+type + File.separator;
         return path;
-
+    }
+    private String getOutputPathAfile(){
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeInMillis(System.currentTimeMillis());
+        String date = new Timestamp(System.currentTimeMillis()).toLocalDateTime().toLocalDate().toString();
+        String path = "Output"+File.separator + date + File.separator ;
+        return path;
     }
 }

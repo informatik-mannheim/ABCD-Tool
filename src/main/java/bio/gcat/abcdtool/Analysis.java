@@ -94,7 +94,7 @@ public double[] getMedian(){
          Arrays.sort(values);
          double medianHere;
          if (valuesArrays.length % 2 == 0)
-             medianHere = (int)(((double) values[values.length / 2] + (double) values[values.length / 2 - 1]) / 2);//TODO: rethink the casting
+             medianHere = (int)((values[values.length / 2] + values[values.length / 2 - 1]) / 2);//TODO: rethink the casting
          else
              medianHere =values[values.length / 2];
 
