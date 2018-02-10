@@ -149,3 +149,56 @@ Oryza sativa Japonica Group DNA, chromosome 12, complete sequence, cultivar
 https://www.ncbi.nlm.nih.gov/nuccore/AP008218.2
 
 
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 1, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008962.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 2, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008963.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 3, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008964.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 4, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008965.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 5, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008966.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 6, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008967.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 7, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008968.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 8, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008969.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 9, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008970.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 10, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008971.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 11, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008972.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 12, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008973.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 13, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008974.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 14, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008975.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 15, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008976.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 16, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008977.1
+
+Chlamydomonas reinhardtii strain CC-503 cw92 mt+ chromosome 17, whole genome shotgun sequence
+https://www.ncbi.nlm.nih.gov/nuccore/CM008978.1
+
+

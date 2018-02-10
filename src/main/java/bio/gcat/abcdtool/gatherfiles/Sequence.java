@@ -54,6 +54,10 @@ public class Sequence {
             return "Chlamydomonas reinhardtii";
         } else if (species.contains("Oryza")) {
             return "Oryza sativa Japonica";
+        }else if(species.contains("RandomCo")){
+            return "Random Covariance DNA";
+        }else if(species.contains("Random")){
+            return "Random DNA";
         }
 
         //could also say return split("chromosome")[0] for most of them
