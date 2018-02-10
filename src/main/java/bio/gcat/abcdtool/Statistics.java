@@ -11,7 +11,7 @@ public class Statistics {
         size = data.length;
     }
 
-    double getMean() {
+    public double getMean() {
         double sum = 0.0;
         for(double a : data)
             sum += a;
@@ -26,13 +26,13 @@ public class Statistics {
         return temp/(size-1);
     }
 
-    double getStdDev() {
+    public double getStdDev() {
         return Math.sqrt(getVariance());
     }
 
-    double getStandardErrorOfTheMean(int sampleSize){
+    public double getStandardErrorOfTheMean(){
 
-        return getStdDev()/Math.sqrt(sampleSize);
+        return getStdDev()/Math.sqrt(data.length);
     }
 
 

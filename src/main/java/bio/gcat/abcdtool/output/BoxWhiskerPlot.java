@@ -29,11 +29,11 @@ public class BoxWhiskerPlot extends ApplicationFrame {
     public BoxWhiskerPlot(final String title, Output o, char base) {
 
         super(title);
-
-        final BoxAndWhiskerCategoryDataset dataset = createDataset(o,base);
+        System.out.println(title);
+        final BoxAndWhiskerCategoryDataset dataset = createDataset(o, base);
 
         final CategoryAxis xAxis = new CategoryAxis("Tupel");
-        final NumberAxis yAxis = new NumberAxis("Value");
+        final NumberAxis yAxis = new NumberAxis("Frequency");
         yAxis.setAutoRangeIncludesZero(false);
 //        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
 //        renderer.setFillBox(false);
@@ -43,15 +43,16 @@ public class BoxWhiskerPlot extends ApplicationFrame {
         renderer.setSeriesOutlinePaint(0, Color.BLACK);
         renderer.setSeriesOutlinePaint(1, Color.BLACK);
         renderer.setUseOutlinePaintForWhiskers(true);
-        Font legendFont = new Font("SansSerif", Font.PLAIN, 15);
+        Font legendFont = new Font("SansSerif", Font.PLAIN, 10);
         renderer.setLegendTextFont(0, legendFont);
         renderer.setLegendTextFont(1, legendFont);
         renderer.setMeanVisible(false);
-        renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        renderer.setBaseSeriesVisibleInLegend(false);
+
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
-         chart = new JFreeChart(
-                title ,
+        chart = new JFreeChart(
+                title,
                 new Font("SansSerif", Font.BOLD, 14),
                 plot,
                 true
@@ -73,30 +74,27 @@ public class BoxWhiskerPlot extends ApplicationFrame {
         // add some values...
 
 
-
-
         String baseString = "" + base;
         List<Analysis> analyses = o.getAnalyses();
 
 
         for (Analysis a : analyses) {
-            int sequenceLength = 0; // we cant just take the string length because of all the unknown bases
-            for (Element e : a.getFrequencies().keySet()) {
-                sequenceLength += a.getFrequencies().get(e);
-            }
+            int sequenceLength = a.getSequenceLength();
             double divident = sequenceLength / a.getTupel();
+//            System.out.println(" BW sequence length = "+sequenceLength);
             for (Element e : a.getFrequencies().keySet()) {
                 if (e.getBase() == base) {
-                    double value = (double)a.getFrequencies().get(e) / divident;
-                    if(value <0.1 ){
+                    double value = (double) a.getFrequencies().get(e) / divident;
+                    value = a.getFrequency(e);
+                    if (value < 0.1) {
                         System.out.println("zero at" + e + "frequency is " + a.getFrequencies().get(e)
-                        + "the value is " + value);
+                                + "the value is " + value);
                     }
                     list.add(value);
                 }
             }
-            dataset.add(list, "Series 1",a.getTupel());
-
+            dataset.add(list, o.getShortName(), a.getTupel());
+            list.clear();
         }
 
 
