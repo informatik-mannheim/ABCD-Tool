@@ -1,14 +1,13 @@
 package bio.gcat.abcdtool.output;
 
-import bio.gcat.abcdtool.Analysis;
-import bio.gcat.abcdtool.Element;
-import bio.gcat.abcdtool.Statistics;
+import bio.gcat.abcdtool.analysis.Analysis;
+import bio.gcat.abcdtool.sequences.readsequence.Element;
+import bio.gcat.abcdtool.analysis.Statistics;
 import bio.gcat.abcdtool.gatherfiles.Sequence;
 import org.jfree.ui.RefineryUtilities;
 
 import java.awt.*;
 import java.io.*;
-import java.sql.Array;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -139,7 +138,7 @@ public class Output {
         StringBuilder sb = new StringBuilder();
 
         sb.append(minMaxAverageTable()); // new part of output
-
+        String[] colors = {"red","lightblue","yellow","green"};
         sb.append("<table>\n");
         for (int i = 0; i < getAnalyzedTupels().size(); i++) {
             int sizeOfTheFragment = analyses.get(i).getTupel();
@@ -147,7 +146,8 @@ public class Output {
             sb.append("\t\t<th/>\n");
         }
         for (int row = 0; row < data[0].length; row++) {
-            sb.append("\t<tr>\n");
+            String color = colors[row%4];
+            sb.append("\t<tr bgcolor=\"" + color + "\">\n");
             for (int col = 0; col < data.length; col++) {
                 sb.append("\t\t<td>" + data[col][row] + "</td>\n");
             }
@@ -275,6 +275,9 @@ public class Output {
                 f,
                 true));
         for (Analysis a : analyses) {
+            if (a.getTupel() == 1) {
+                continue;
+            }
             double[] values = a.getFrequencies('A');
 //            System.out.println("Output number of values = " + values.length);
             Statistics statistics = new Statistics(values);
@@ -285,13 +288,13 @@ public class Output {
             df.setMaximumFractionDigits(15);
 
 
-            out.println(this.getName() + " " + a.getTupel() + " : " + df.format(mean) + " : " + df.format(standardErrorOfTheMean));
+            out.println(this.getName() + " " + String.format("%03d", a.getTupel()) + " : " + df.format(mean) + " : " + df.format(standardErrorOfTheMean));
         }
         out.close();
 
     }
 
-    private void createSkewFile() throws FileNotFoundException {
+    private void createSkewFile() throws FileNotFoundException { //todo: refactor?
         File fileAT = new File(getOutputPathAfile() + "ATSkew.txt");
         File fileGC = new File(getOutputPathAfile() + "GCSkew.txt");
         if (!fileAT.exists()) {
@@ -359,11 +362,12 @@ public class Output {
         out.println(this.toHTML());
         out.close();
     }
+
     private void createExcelOutput() throws FileNotFoundException {
 //        File file = new File(getOutputPath(name, "Excel") + "output.xls");
 //        file.getParentFile().mkdirs();
 
-        Excel e = new Excel(getAsTable(),analyses);
+        Excel e = new Excel(getAsTable(), analyses);
         e.writeFile(getOutputPath(name, "Excel") + "output.xls");
     }
 

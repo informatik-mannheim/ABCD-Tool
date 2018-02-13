@@ -1,4 +1,4 @@
-package bio.gcat.abcdtool;
+package bio.gcat.abcdtool.analysis;
 
 import java.util.Arrays;
 

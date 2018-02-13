@@ -1,18 +1,15 @@
 package bio.gcat.abcdtool.output;
 
-import bio.gcat.abcdtool.Analysis;
-import bio.gcat.abcdtool.Element;
+import bio.gcat.abcdtool.analysis.Analysis;
+import bio.gcat.abcdtool.sequences.readsequence.Element;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.labels.BoxAndWhiskerToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
 import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
-import org.jfree.data.xy.XYSeries;
 import org.jfree.ui.ApplicationFrame;
 
 import java.awt.*;
@@ -38,26 +35,23 @@ public class BoxWhiskerPlot extends ApplicationFrame {
 //        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
 //        renderer.setFillBox(false);
         BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+
         renderer.setFillBox(true);
         renderer.setSeriesPaint(0, Color.LIGHT_GRAY);
         renderer.setSeriesOutlinePaint(0, Color.BLACK);
-        renderer.setSeriesOutlinePaint(1, Color.BLACK);
         renderer.setUseOutlinePaintForWhiskers(true);
         Font legendFont = new Font("SansSerif", Font.PLAIN, 10);
         renderer.setLegendTextFont(0, legendFont);
-        renderer.setLegendTextFont(1, legendFont);
-        renderer.setMeanVisible(false);
+        renderer.setMeanVisible(true);
         renderer.setBaseSeriesVisibleInLegend(false);
 
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
-
         chart = new JFreeChart(
                 title,
                 new Font("SansSerif", Font.BOLD, 14),
                 plot,
                 true
         );
-
 
         final ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(450, 270));
@@ -70,7 +64,7 @@ public class BoxWhiskerPlot extends ApplicationFrame {
 
         final DefaultBoxAndWhiskerCategoryDataset dataset
                 = new DefaultBoxAndWhiskerCategoryDataset();
-        final List<Double> list = new ArrayList<>();
+
         // add some values...
 
 
@@ -79,6 +73,7 @@ public class BoxWhiskerPlot extends ApplicationFrame {
 
 
         for (Analysis a : analyses) {
+             List<Double> list = new ArrayList<>();
             int sequenceLength = a.getSequenceLength();
             double divident = sequenceLength / a.getTupel();
 //            System.out.println(" BW sequence length = "+sequenceLength);
@@ -86,7 +81,7 @@ public class BoxWhiskerPlot extends ApplicationFrame {
                 if (e.getBase() == base) {
                     double value = (double) a.getFrequencies().get(e) / divident;
                     value = a.getFrequency(e);
-                    if (value < 0.1) {
+                    if (value < 0.319 || value > 0.3227  ) {
                         System.out.println("zero at" + e + "frequency is " + a.getFrequencies().get(e)
                                 + "the value is " + value);
                     }

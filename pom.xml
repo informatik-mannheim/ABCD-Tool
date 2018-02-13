@@ -26,7 +26,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>bio.gcat.abcdtool.BatchRunner</mainClass>
+                            <mainClass>bio.gcat.abcdtool.main.BatchRunner</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -46,7 +46,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>bio.gcat.abcdtool.BatchRunner</mainClass>
+                                    <mainClass>bio.gcat.abcdtool.main.BatchRunner</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
@@ -105,6 +105,24 @@
         <artifactId>poi</artifactId>
         <version>3.17</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.haifengl</groupId>
+            <artifactId>smile-core</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.0</version>
+        </dependency>
+
     </dependencies>
 
 

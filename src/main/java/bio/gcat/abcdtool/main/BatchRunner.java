@@ -1,4 +1,4 @@
-package bio.gcat.abcdtool;
+package bio.gcat.abcdtool.main;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +21,9 @@ public class BatchRunner {
                     if (file.isDirectory()) {
 
                         System.out.println("running folder" + file.getAbsolutePath());
-                        Thread t = new Thread(() -> runFolder(file));
-                        t.run();
+//                        Thread t = new Thread(() -> runFolder(file));
+//                        t.run();
+                        runFolder(file);
                     }
 
 
@@ -36,18 +37,26 @@ public class BatchRunner {
 
                 System.out.println("running " + s);
                 f = null;
-                Thread t = new Thread(() -> {
-                    try {
-
+//                Thread t = new Thread(() -> {
+//                    try {
+//
+//                        System.out.println("running  now : " + s);
+//                        Main.main(new String[]{s});
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                });
+//                t.run();
+                try {
+//
                         System.out.println("running  now : " + s);
                         Main.main(new String[]{s});
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                });
-                t.run();
             }
         }
+
     }
 
 

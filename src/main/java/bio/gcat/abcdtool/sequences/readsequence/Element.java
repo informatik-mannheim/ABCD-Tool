@@ -1,4 +1,4 @@
-package bio.gcat.abcdtool;
+package bio.gcat.abcdtool.sequences.readsequence;
 
 /**
  * Our analyzed value,

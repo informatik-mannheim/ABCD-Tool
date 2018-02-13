@@ -1,4 +1,4 @@
-package bio.gcat.abcdtool;
+package bio.gcat.abcdtool.sequences.readsequence;
 
 import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
 

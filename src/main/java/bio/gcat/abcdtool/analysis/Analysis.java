@@ -1,4 +1,6 @@
-package bio.gcat.abcdtool;
+package bio.gcat.abcdtool.analysis;
+
+import bio.gcat.abcdtool.sequences.readsequence.Element;
 
 import java.util.*;
 

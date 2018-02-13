@@ -1,6 +1,6 @@
 package bio.gcat.abcdtool.output;
 
-import bio.gcat.abcdtool.Analysis;
+import bio.gcat.abcdtool.analysis.Analysis;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
