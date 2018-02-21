@@ -9,6 +9,9 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * reads a fasta file and returns a biojava compatible Sequence
+ */
 public class FastFastaLoader {
     File file;
 
@@ -23,7 +26,7 @@ public class FastFastaLoader {
 
         int a = 0;
 
-        for (a = 0; a <= 25; a++) {
+        for (a = 0; a <= 25; a++) { //this is needed to be able to analyze the sequences with unknown bases
             char c = (char) (a + 'A');
             if (!(c == 'A' || c == 'T' || c == 'G' || c == 'C')) {
                 compoundSet.addCompound("" + c, "" + c);

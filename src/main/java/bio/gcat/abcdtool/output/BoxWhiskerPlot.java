@@ -8,20 +8,25 @@ import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
+import org.jfree.chart.ui.ApplicationFrame;
 import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
-import org.jfree.ui.ApplicationFrame;
 
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * create a box whisker plot using JFreechart
+ */
 public class BoxWhiskerPlot extends ApplicationFrame {
     public JFreeChart getChart() {
         return chart;
     }
 
     private JFreeChart chart;
+
 
     public BoxWhiskerPlot(final String title, Output o, char base) {
 
@@ -35,6 +40,8 @@ public class BoxWhiskerPlot extends ApplicationFrame {
 //        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
 //        renderer.setFillBox(false);
         BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+        yAxis.setNumberFormatOverride(new DecimalFormat("0.0000"));
+//        yAxis.setAutoTickUnitSelection(true);
 
         renderer.setFillBox(true);
         renderer.setSeriesPaint(0, Color.LIGHT_GRAY);
@@ -43,7 +50,9 @@ public class BoxWhiskerPlot extends ApplicationFrame {
         Font legendFont = new Font("SansSerif", Font.PLAIN, 10);
         renderer.setLegendTextFont(0, legendFont);
         renderer.setMeanVisible(true);
-        renderer.setBaseSeriesVisibleInLegend(false);
+        renderer.setMaxOutlierVisible(false);
+        renderer.setMinOutlierVisible(false);
+//        renderer.setBaseSeriesVisibleInLegend(false);
 
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
         chart = new JFreeChart(
@@ -81,10 +90,10 @@ public class BoxWhiskerPlot extends ApplicationFrame {
                 if (e.getBase() == base) {
                     double value = (double) a.getFrequencies().get(e) / divident;
                     value = a.getFrequency(e);
-                    if (value < 0.319 || value > 0.3227  ) {
-                        System.out.println("zero at" + e + "frequency is " + a.getFrequencies().get(e)
-                                + "the value is " + value);
-                    }
+//                    if (value < 0.319 || value > 0.3227  ) {
+//                        System.out.println("zero at" + e + "frequency is " + a.getFrequencies().get(e)
+//                                + "the value is " + value);
+//                    }
                     list.add(value);
                 }
             }

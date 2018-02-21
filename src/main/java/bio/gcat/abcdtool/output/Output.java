@@ -4,7 +4,6 @@ import bio.gcat.abcdtool.analysis.Analysis;
 import bio.gcat.abcdtool.sequences.readsequence.Element;
 import bio.gcat.abcdtool.analysis.Statistics;
 import bio.gcat.abcdtool.gatherfiles.Sequence;
-import org.jfree.ui.RefineryUtilities;
 
 import java.awt.*;
 import java.io.*;
@@ -18,6 +17,9 @@ import java.util.regex.Pattern;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 import org.jfree.graphics2d.svg.SVGUtils;
 
+/**
+ * The different ways to output our analyses
+ */
 public class Output {
     private List<Map<Element, Integer>> analyzedTupels;
     private List<Analysis> analyses;
@@ -157,18 +159,32 @@ public class Output {
         return sb.toString();
     }
 
+    /**
+     * this was an Idea to add some general data to the top of the HTML table
+     * @return
+     */
     private String minMaxAverageTable() {
         //TODO: Think about how to get the output
         return "";
     }
 
+    /**
+     * create a barchart, was not useful in our project
+     */
+    @Deprecated
     public void toBarChart() {
         final Barchart demo = new Barchart("A Chart", this, 'A');
         demo.pack();
-        RefineryUtilities.centerFrameOnScreen(demo);
+//        RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
     }
 
+    /**
+     * created a scatterplot of all the bases of an analysis, the boxwhiskerplot was proven to be more useful
+     * @return
+     * {@link #toBoxWhiskerPlot()} ()}
+     */
+    @Deprecated
     public Scatterplot[] toScatterPlot() {
         final Scatterplot scatterplotA = new Scatterplot("A Chart", this, 'A');
 
@@ -182,6 +198,10 @@ public class Output {
         return new Scatterplot[]{scatterplotA, scatterplotT, scatterplotG, scatterplotC};
     }
 
+    /**
+     * create a Box Whisker plot for all the bases of an analysis
+     * @return
+     */
     private BoxWhiskerPlot[] toBoxWhiskerPlot() {
         String speciesAndChromosome = getTitleName();
         final BoxWhiskerPlot boxWhiskerPlotA = new BoxWhiskerPlot(speciesAndChromosome + " A", this, 'A');
@@ -223,15 +243,20 @@ public class Output {
         this.name = name;
     }
 
+    /**
+     * Some OS have problems with different letters.
+     * @param name
+     * @return
+     */
     public static String prepareNameForWriting(String name) {
 
         name = name.replaceAll(":|>|<", "");
         return name;
+        //char[] ILLEGAL_CHARACTERS = { '\n', '\r', '\t', '\0', '\f', '`', '?', '*',  '<', '>', '|', '\"', ':'};
     }
 
     public void prepareNameForWriting() {
         name = prepareNameForWriting(name);
-        //char[] ILLEGAL_CHARACTERS = { '\n', '\r', '\t', '\0', '\f', '`', '?', '*',  '<', '>', '|', '\"', ':'};
 
     }
 
@@ -243,13 +268,19 @@ public class Output {
         createBoxWhisker();
         createStandardErrorFile();
         createFileA();
+        createFileAllProbabilities();
         createSkewFile();
-        createExcelOutput();
+//        createExcelOutput();
+        createStandardDevFile();
 //        this.toBarChart();
 
 
     }
 
+    /**
+     * creates or appends a file that lists the content of adenine for every analyzed species.
+     * @throws FileNotFoundException
+     */
     private void createFileA() throws FileNotFoundException {
         File f = new File(getOutputPathAfile() + "A.txt");
         if (!f.exists()) {
@@ -265,7 +296,77 @@ public class Output {
 
     }
 
+    /**
+     * similar to createFileA. This one gives the relative frequency of all bases in a sequence
+     * @throws FileNotFoundException
+     */
+    private void createFileAllProbabilities() throws FileNotFoundException {
+        File f = new File(getOutputPathAfile() + "ATGC.txt");
+        if (!f.exists()) {
+            f.getParentFile().mkdirs();
+        }
+        PrintWriter out = new PrintWriter(new FileOutputStream(
+                f,
+                true));
+        double frequencyA = this.getAnalyses().get(0).getFrequencies().get(new Element('A', 0));
+        double frequencyT = this.getAnalyses().get(0).getFrequencies().get(new Element('T', 0));
+        double frequencyG = this.getAnalyses().get(0).getFrequencies().get(new Element('G', 0));
+        double frequencyC = this.getAnalyses().get(0).getFrequencies().get(new Element('C', 0));
+        frequencyA = frequencyA / this.analyses.get(0).getSequenceLength();
+        frequencyT = frequencyT / this.analyses.get(0).getSequenceLength();
+        frequencyG = frequencyG / this.analyses.get(0).getSequenceLength();
+        frequencyC = frequencyC / this.analyses.get(0).getSequenceLength();
+        out.println(this.getName() + "A : " + frequencyA);
+        out.println(this.getName() + "T : " + frequencyT);
+        out.println(this.getName() + "G : " + frequencyG);
+        out.println(this.getName() + "C : " + frequencyC);
+        out.close();
 
+    }
+
+    /**
+     * Writes the standard deviation for every sequence into a file.
+     * The deviation is calculated of all the relative frequencies in all the tupel sizes
+     * @throws FileNotFoundException
+     */
+    private void createStandardDevFile() throws FileNotFoundException {
+        File standarddev = new File(getOutputPathAfile() + "StandardDev.txt");
+        if (!standarddev.exists()) {
+            standarddev.getParentFile().mkdirs();
+        }
+        PrintWriter out = new PrintWriter(new FileOutputStream(
+                standarddev,
+                true));
+        for (Analysis a : analyses) {
+            if (a.getTupel() == 1) {
+                continue;
+            }
+            double[] valuesA = a.getFrequencies('A');
+            double[] valuesT = a.getFrequencies('T');
+            double[] valuesG = a.getFrequencies('G');
+            double[] valuesC = a.getFrequencies('C');
+//            System.out.println("Output number of values = " + values.length);
+            Statistics statisticsA = new Statistics(valuesA);
+            Statistics statisticsT = new Statistics(valuesT);
+            Statistics statisticsG = new Statistics(valuesG);
+            Statistics statisticsC = new Statistics(valuesC);
+//            System.out.println("Output, Standard error : " + standardErrorOfTheMean);
+            DecimalFormat df = new DecimalFormat("#");
+            df.setMaximumFractionDigits(15);
+
+
+            out.println(this.getName() + " "+ "A" + String.format("%03d", a.getTupel()) + " : " + df.format(statisticsA.getMean()) + " : " + df.format(statisticsA.getStdDev()));
+            out.println(this.getName() + " "+ "T" + String.format("%03d", a.getTupel()) + " : " + df.format(statisticsT.getMean()) + " : " + df.format(statisticsT.getStdDev()));
+            out.println(this.getName() + " " +"G"+ String.format("%03d", a.getTupel()) + " : " + df.format(statisticsG.getMean()) + " : " + df.format(statisticsG.getStdDev()));
+            out.println(this.getName() + " " +"C"+  String.format("%03d", a.getTupel()) + " : " + df.format(statisticsC.getMean()) + " : " + df.format(statisticsC.getStdDev()));
+        }
+        out.close();
+    }
+
+    /**
+     * Writes the standard error of A for all tupel sizes >1 into it's own files
+     * @throws FileNotFoundException
+     */
     private void createStandardErrorFile() throws FileNotFoundException {
         File f = new File(getOutputPathAfile() + "StandardErrorA.txt");
         if (!f.exists()) {
@@ -294,6 +395,10 @@ public class Output {
 
     }
 
+    /**
+     * writes the AT and GC skew for the sequence into the file.
+     * @throws FileNotFoundException
+     */
     private void createSkewFile() throws FileNotFoundException { //todo: refactor?
         File fileAT = new File(getOutputPathAfile() + "ATSkew.txt");
         File fileGC = new File(getOutputPathAfile() + "GCSkew.txt");
@@ -327,7 +432,10 @@ public class Output {
 
     }
 
-
+    /**
+     * write the plots into a file
+     * @throws IOException
+     */
     private void createBoxWhisker() throws IOException {
         BoxWhiskerPlot[] plots = this.toBoxWhiskerPlot();
         for (BoxWhiskerPlot w : plots) {
@@ -344,7 +452,10 @@ public class Output {
         }
     }
 
-
+    /**
+     * write the table as a LaTeX table into a file
+     * @throws FileNotFoundException
+     */
     private void createTexOutput() throws FileNotFoundException {
         File fileTex = new File(getOutputPath(name, "Latex") + "table.tex");
         fileTex.getParentFile().mkdirs();
@@ -354,6 +465,10 @@ public class Output {
         tex.close();
     }
 
+    /**
+     * write the HTML output to a file
+     * @throws FileNotFoundException
+     */
     private void createHTMLOutput() throws FileNotFoundException {
         File file = new File(getOutputPath(name, "HTML") + "output.html");
         file.getParentFile().mkdirs();
@@ -363,6 +478,10 @@ public class Output {
         out.close();
     }
 
+    /**
+     * create an excel table as a output
+     * @throws FileNotFoundException
+     */
     private void createExcelOutput() throws FileNotFoundException {
 //        File file = new File(getOutputPath(name, "Excel") + "output.xls");
 //        file.getParentFile().mkdirs();
@@ -371,7 +490,10 @@ public class Output {
         e.writeFile(getOutputPath(name, "Excel") + "output.xls");
     }
 
-
+    /**
+     * write the scatterplots to a file
+     * @throws IOException
+     */
     private void createScatterplots() throws IOException {
         Scatterplot[] plots = this.toScatterPlot();
         for (Scatterplot s : plots) {
@@ -389,6 +511,12 @@ public class Output {
 
     }
 
+    /**
+     * returns an output path depending on the output type and species name
+     * @param name  name of the species
+     * @param type  type of the output
+     * @return
+     */
     public String getOutputPath(String name, String type) {
         String speciesName = Sequence.getSpecies(name);
 //        Calendar calendar = Calendar.getInstance();
@@ -399,7 +527,11 @@ public class Output {
         return path;
     }
 
-    private String getOutputPathAfile() {
+    /**
+     * since this output is not relative to just a species, it returns the output path for the current day
+     * @return
+     */
+    public static String getOutputPathAfile() {
 //        Calendar calendar = Calendar.getInstance();
 //        calendar.setTimeInMillis(System.currentTimeMillis());
         String date = new Timestamp(System.currentTimeMillis()).toLocalDateTime().toLocalDate().toString();

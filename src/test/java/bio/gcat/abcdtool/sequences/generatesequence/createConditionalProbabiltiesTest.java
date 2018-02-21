@@ -5,16 +5,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 
-public class CreateCovarianceTest {
+public class createConditionalProbabiltiesTest {
 
     @Test
-    public void createCovarianceMatrix() {
+    public void createCondProabiltiesTest() {
         String sequence = "ACCCCAAACC";
-        double[][] covariance = new CreateCovariance().createCovarianceMatrix("ACCCCAAACC");
-        assertEquals(covariance[0][0], 0.5, 0.001);
-        assertEquals(covariance[0][2], 0.5, 0.001);
-        assertEquals(covariance[2][0], 0.2, 0.001);
-        assertEquals(covariance[2][2], 0.8, 0.001);
+        double[][] condProb = new createConditionalProbabilities().createConditionalProbbabilityMatrix("ACCCCAAACC");
+        assertEquals(condProb[0][0], 0.5, 0.001);
+        assertEquals(condProb[0][2], 0.5, 0.001);
+        assertEquals(condProb[2][0], 0.2, 0.001);
+        assertEquals(condProb[2][2], 0.8, 0.001);
 
         int f = 0;
         int TUPEL = 3;

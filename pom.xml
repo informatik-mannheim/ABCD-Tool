@@ -56,11 +56,11 @@
         </plugins>
     </build>
     <dependencies>
-    <dependency>
+   <!-- <dependency>
         <groupId>org.jfree</groupId>
         <artifactId>jfreechart</artifactId>
         <version>1.0.14</version>
-    </dependency>
+    </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

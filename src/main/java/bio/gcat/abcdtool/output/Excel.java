@@ -11,6 +11,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * write a table into an excel file. The table here is generated in the Output class
+ */
 public class Excel {
     List<Analysis> analyses;
     String[][] table;
@@ -43,13 +46,13 @@ public class Excel {
     private HSSFWorkbook writeTable() {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("FirstSheet");
-        HSSFRow rowhead = sheet.createRow((short) 0);
+        HSSFRow rowhead = sheet.createRow(0);
         for (int i = 0; i < analyses.size(); i++) {
             rowhead.createCell(i).setCellValue(analyses.get(i).getTupel());
         }
 
         for (int i = 0; i < table[0].length; i++) {
-            HSSFRow row = sheet.createRow((short) i + 1);
+            HSSFRow row = sheet.createRow( i + 1);
             for (int j = 0; j < table.length; j++) {
                 row.createCell(j).setCellValue(table[j][i]);
             }

@@ -2,9 +2,12 @@ package bio.gcat.abcdtool.sequences.generatesequence;
 
 import java.util.Arrays;
 
-public class CreateCovariance {
+/**
+ * creates a matrix of conditional probabilities
+ */
+public class createConditionalProbabilities {
     String sequence;
-    public double[][] createCovarianceMatrix(String sequence){
+    public double[][] createConditionalProbbabilityMatrix(String sequence){
         int[][] table = new int[4][4];
         char[] sequenceArray = sequence.toCharArray();
         for(int i =0;i<sequenceArray.length-1;i++){

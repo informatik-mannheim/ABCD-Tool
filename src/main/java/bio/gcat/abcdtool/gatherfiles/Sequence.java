@@ -1,5 +1,8 @@
 package bio.gcat.abcdtool.gatherfiles;
 
+/**
+ * A class that saves the name and id of the sequences for the batch downloader
+ */
 public class Sequence {
     String name;
     String id;

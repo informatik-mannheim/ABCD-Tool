@@ -225,11 +225,16 @@ public class Analysis {
         return tupel;
     }
 
+    /**
+     * return all frequencies of a specific base in all tupel sizes and al positions
+     * @param a  the base that should be analyzed
+     * @return a double array returning all the frequencies of base a in every position of every tupel size
+     */
     public double[] getFrequencies(char a) {
         List<Double> frequencies = new ArrayList<>();
         for (Element e : frequenciesMap.keySet()) {
             if (e.getBase() == a) {
-                frequencies.add((double) frequenciesMap.get(e) / (sequenceLength/tupel));
+                frequencies.add((double) frequenciesMap.get(e) / ((double)sequenceLength/tupel));
             }
         }
         double[] values = frequencies.stream().mapToDouble(d -> d).toArray(); //identity function, Java unboxes automatically to get the double value

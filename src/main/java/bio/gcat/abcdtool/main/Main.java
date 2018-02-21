@@ -2,6 +2,7 @@ package bio.gcat.abcdtool.main;
 
 import bio.gcat.abcdtool.analysis.Analysis;
 import bio.gcat.abcdtool.output.Output;
+import bio.gcat.abcdtool.sequences.generatesequence.createConditionalProbabilities;
 import bio.gcat.abcdtool.sequences.generatesequence.RandomStringGenerator;
 import bio.gcat.abcdtool.sequences.readsequence.FastFastaLoader;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
@@ -27,8 +28,8 @@ public class Main {
         double msec = (System.currentTimeMillis() - sTime) / (1.0 * entries.size());
         System.out.println("|samples| = " + entries.size() + " (" + msec + " ms/read)");
 
-        for(int i=1;i<=20;i++){
-            System.out.print(i+ ",");
+        for (int i = 1; i <= 20; i++) {
+            System.out.print(i + ",");
         }
         Set<Map.Entry<String, Sequence<NucleotideCompound>>> g = entries.entrySet();
         for (Map.Entry<String, Sequence<NucleotideCompound>> map : g) {
@@ -36,11 +37,11 @@ public class Main {
 
             String name = map.getKey();
 
-//double[][] covariance = new CreateCovariance().createCovarianceMatrix(sequence);
+//double[][] covariance = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
 
             /// RANDOMNESS
 //            name = "NRandomCo 250 mio";
-//            sequence = new RandomStringGenerator().randomCovarianceString(250000000,true);
+//            sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(250000000,true);
 
 //            File fileTex = new File("Output/randomCo.fasta");
 //            fileTex.getParentFile().mkdirs();
@@ -54,7 +55,7 @@ public class Main {
 
 
 //            analyzeN(name, sequence);
-            System.out.println(sequence.length());
+//            System.out.println(sequence.length());
 
 //          try{
 //             String s = args[1]; //(dirty)
@@ -63,30 +64,36 @@ public class Main {
 //          }catch (ArrayIndexOutOfBoundsException e){
 //              e.printStackTrace();
 //          }
-//            analyzeRandom();
-//            for(int i = 0;i<30;i++){
-//                System.out.println("analyzing" + name);
-                analyze(name, sequence);
-//            }
 
+            double[][] condProbabilities = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
+//            analyzeRandom();
+            for (int i = 0; i < 10; i++) {
+//                System.out.println/("analyzing" + name);
+                sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(sequence.length(), condProbabilities);
+                analyze(name + "random", sequence);
+            }
 
 
         }
         System.out.println("the calculation took " + ((System.currentTimeMillis() - sTime) / 1000) + "seconds");
     }
 
+    /**
+     * Analyze Random sequences
+     * @throws IOException
+     */
     public static void analyzeRandom() throws IOException {
-        for (int j = 0; j < 30; j++) {
+        for (int j = 0; j < 1; j++) {
 
 
             String tempName = "RandomCo250Mio  " + j;
             System.out.println("start" + tempName);
-            String tempString = new RandomStringGenerator().randomCovarianceString(250000000, true);
+            String tempString = new RandomStringGenerator().randomConditionalProbabiliteisString(250000000, true);
 
             System.out.println("end" + tempName);
             analyze(tempName, tempString);
         }
-        for (int j = 0; j < 0; j++) {
+        for (int j = 0; j < 1; j++) {
             String tempName = "Random250mio " + j;
             System.out.println("start" + tempName);
             String tempString = new RandomStringGenerator().randomString(250000000);
@@ -95,6 +102,12 @@ public class Main {
         }
     }
 
+    /**
+     * Analyze the sequence by splitting it into 1/n chunks
+     * @param name
+     * @param sequence
+     * @throws IOException
+     */
     public static void analyzeN(String name, String sequence) throws IOException {
         //create analyses for each 1/N piece
         for (int n = 1; n <= 10; n++) {
@@ -111,15 +124,20 @@ public class Main {
 
     }
 
+    /**
+     * create a normal analysis
+     * @param name
+     * @param sequence
+     * @throws IOException
+     */
     public static void analyze(String name, String sequence) throws IOException {
 //        name = name+"shortened" ;
         Output output = new Output(name);
 //        for (int j = 1; j <= 20; j++) {//NOT 0
-            int[] toCheck = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 50, 100};
-            for (int j : toCheck) {
+        int[] toCheck = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 50};
+        for (int j : toCheck) {
             System.out.println("analyzing " + j);
 //            System.out.println("first string length = " + sequence.length());
-
 
 
 //TODO: REMOVE THIS FOR THE ANALYSIS WITHOUT REMOVING N
@@ -129,6 +147,7 @@ public class Main {
 //            String tempsequence = createSequence(sequence, j);
 //            String tempsequence = createFirstNSequence(sequence, j);
             Analysis analysis = new Analysis(sequence, j);
+            System.out.println(analysis.getSequenceLength());
 //                Analysis analysis = new Analysis(tempsequence, j);
 
             System.out.println("analysis ended" + j);
@@ -140,18 +159,32 @@ public class Main {
 
 
     }
-    private static String createFirstNSequence(String sequence, int j) {
+
+    /**
+     * take the first size letters of a sequence
+     * @param sequence
+     * @param size the length of the desired string
+     * @return
+     */
+    private static String createFirstNSequence(String sequence, int size) {
 //        sequence= sequence.replaceAll("N","");
-        System.out.println(sequence.substring(0,10));
-        int stringlength = (int) (sequence.length() / ((double) 20 / j));
+        System.out.println(sequence.substring(0, 10));
+        int stringlength = (int) (sequence.length() / ((double) 20 / size));
 
 
-        return sequence.substring(0,  stringlength);
+        return sequence.substring(0, stringlength);
 //
     }
-    private static String createSequence(String sequence, int j) {
+
+    /**
+     * create a random sequence of size j
+     * @param sequence
+     * @param size the length of the desired string
+     * @return
+     */
+    private static String createSequence(String sequence, int size) {
 //        return sequence.substring(0,sequence.length()/(20/j));
-       int stringlength = (int) (sequence.length() / ((double) 100 / j));
+        int stringlength = (int) (sequence.length() / ((double) 100 / size));
 
         String sequ = "";
 

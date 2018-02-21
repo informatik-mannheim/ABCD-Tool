@@ -57,10 +57,9 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.ui.ApplicationFrame;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
 
 /**
  * This class creates a visualisation of the average values for each Nucleotide
@@ -297,7 +296,7 @@ public class Barchart extends ApplicationFrame {
 
         final Barchart demo = new Barchart("Line Chart Demo");
         demo.pack();
-        RefineryUtilities.centerFrameOnScreen(demo);
+//        RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
 
     }
