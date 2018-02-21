@@ -50,7 +50,7 @@ public class BoxWhiskerPlot extends ApplicationFrame {
         Font legendFont = new Font("SansSerif", Font.PLAIN, 10);
         renderer.setLegendTextFont(0, legendFont);
         renderer.setMeanVisible(true);
-        renderer.setMaxOutlierVisible(false);
+        renderer.setMaxOutlierVisible(false); // remove this and the next line if you want to use regular Jfreechart
         renderer.setMinOutlierVisible(false);
 //        renderer.setBaseSeriesVisibleInLegend(false);
 
