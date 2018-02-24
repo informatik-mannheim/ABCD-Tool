@@ -1,47 +1,38 @@
 package bio.gcat.abcdtool.analysis;
 
-import java.util.Arrays;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+/**
+ * a wrapper for apache Maths
+ */
 public class Statistics {
     double[] data;
     int size;
-
+    DescriptiveStatistics stats;
     public Statistics(double[] data) {
         this.data = data;
         size = data.length;
+        stats = new DescriptiveStatistics(data);
     }
 
     public double getMean() {
-        double sum = 0.0;
-        for(double a : data)
-            sum += a;
-        return sum/size;
+      return stats.getMean();
     }
 
     double getVariance() {
-        double mean = getMean();
-        double temp = 0;
-        for(double a :data)
-            temp += (a-mean)*(a-mean);
-        return temp/(size-1);
+    return stats.getVariance();
     }
 
     public double getStdDev() {
-        return Math.sqrt(getVariance());
+return stats.getStandardDeviation();
     }
 
     public double getStandardErrorOfTheMean(){
-
         return getStdDev()/Math.sqrt(data.length);
     }
 
 
     public double median() {
-        Arrays.sort(data);
-
-        if (data.length % 2 == 0) {
-            return (data[(data.length / 2) - 1] + data[data.length / 2]) / 2.0;
-        }
-        return data[data.length / 2];
+       return stats.getPercentile(50) ;
     }
 }

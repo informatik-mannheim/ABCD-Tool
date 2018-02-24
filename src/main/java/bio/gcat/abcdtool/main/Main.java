@@ -65,21 +65,39 @@ public class Main {
 //              e.printStackTrace();
 //          }
 
-            double[][] condProbabilities = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
-//            analyzeRandom();
-            for (int i = 0; i < 10; i++) {
+            if (args.length >= 2) {
+                if (args[1].equalsIgnoreCase("random")) {
+                    analyzeRandom();
+                }
+                if (args[1].equalsIgnoreCase("randomconditional")) {
+                    double[][] condProbabilities = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
+                    sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(sequence.length(), condProbabilities);
+                    analyze(name + "random", sequence);
+                }
+                if (args[1].equalsIgnoreCase("normal")) {
+                    analyze(name, sequence);
+                }
+                if (args[1].equalsIgnoreCase("N")) {
+                    analyzeN(name, sequence);
+                }
+            } else {
+//                double[][] condProbabilities = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
+            analyzeRandom();
+//                for (int i = 0; i < 10; i++) {
 //                System.out.println/("analyzing" + name);
-                sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(sequence.length(), condProbabilities);
-                analyze(name + "random", sequence);
+//                    sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(sequence.length(), condProbabilities);
+                    analyze(name , sequence);
+//                }
+
+
             }
-
-
         }
         System.out.println("the calculation took " + ((System.currentTimeMillis() - sTime) / 1000) + "seconds");
     }
 
     /**
      * Analyze Random sequences
+     *
      * @throws IOException
      */
     public static void analyzeRandom() throws IOException {
@@ -104,6 +122,7 @@ public class Main {
 
     /**
      * Analyze the sequence by splitting it into 1/n chunks
+     *
      * @param name
      * @param sequence
      * @throws IOException
@@ -126,6 +145,7 @@ public class Main {
 
     /**
      * create a normal analysis
+     *
      * @param name
      * @param sequence
      * @throws IOException
@@ -162,8 +182,9 @@ public class Main {
 
     /**
      * take the first size letters of a sequence
+     *
      * @param sequence
-     * @param size the length of the desired string
+     * @param size     the length of the desired string
      * @return
      */
     private static String createFirstNSequence(String sequence, int size) {
@@ -178,8 +199,9 @@ public class Main {
 
     /**
      * create a random sequence of size j
+     *
      * @param sequence
-     * @param size the length of the desired string
+     * @param size     the length of the desired string
      * @return
      */
     private static String createSequence(String sequence, int size) {
