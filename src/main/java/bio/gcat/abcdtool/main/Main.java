@@ -82,8 +82,11 @@ public class Main {
                 }
             } else {
 //                double[][] condProbabilities = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
-            analyzeRandom();
-//                for (int i = 0; i < 10; i++) {
+//                for(int i=0;i<1;i++){
+
+//                    analyzeRandom();
+//                }
+//                for (int i = 0; i < 20; i++) {
 //                System.out.println/("analyzing" + name);
 //                    sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(sequence.length(), condProbabilities);
                     analyze(name , sequence);
@@ -101,17 +104,18 @@ public class Main {
      * @throws IOException
      */
     public static void analyzeRandom() throws IOException {
-        for (int j = 0; j < 1; j++) {
+        for (int j = 1; j < 2; j=j+10) {
 
 
-            String tempName = "RandomCo250Mio  " + j;
+            String tempName = "RandomCo 250 million";
             System.out.println("start" + tempName);
-            String tempString = new RandomStringGenerator().randomConditionalProbabiliteisString(250000000, true);
+            int size = 250000000;
+            String tempString = new RandomStringGenerator().randomConditionalProbabiliteisString(size, true);
 
             System.out.println("end" + tempName);
             analyze(tempName, tempString);
         }
-        for (int j = 0; j < 1; j++) {
+        for (int j = 1; j <2; j++) {
             String tempName = "Random250mio " + j;
             System.out.println("start" + tempName);
             String tempString = new RandomStringGenerator().randomString(250000000);
@@ -129,7 +133,7 @@ public class Main {
      */
     public static void analyzeN(String name, String sequence) throws IOException {
         //create analyses for each 1/N piece
-        for (int n = 1; n <= 10; n++) {
+        for (int n = 1; n <= 4; n++) {
             for (int i = 0; i < n; i++) {
                 String nameN = name + " split" + n + " part " + (i + 1);
                 int length = sequence.length();
@@ -187,7 +191,7 @@ public class Main {
      * @param size     the length of the desired string
      * @return
      */
-    private static String createFirstNSequence(String sequence, int size) {
+    public static String createFirstNSequence(String sequence, int size) {
 //        sequence= sequence.replaceAll("N","");
         System.out.println(sequence.substring(0, 10));
         int stringlength = (int) (sequence.length() / ((double) 20 / size));
@@ -204,7 +208,7 @@ public class Main {
      * @param size     the length of the desired string
      * @return
      */
-    private static String createSequence(String sequence, int size) {
+    public static String createSequence(String sequence, int size) {
 //        return sequence.substring(0,sequence.length()/(20/j));
         int stringlength = (int) (sequence.length() / ((double) 100 / size));
 

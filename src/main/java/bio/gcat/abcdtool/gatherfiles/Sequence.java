@@ -58,7 +58,7 @@ public class Sequence {
         } else if (species.contains("Oryza")) {
             return "Oryza sativa Japonica";
         }else if(species.contains("RandomCo")){
-            return "Random Covariance DNA";
+            return "Random conditional DNA";
         }else if(species.contains("Random")){
             return "Random DNA";
         }

@@ -247,7 +247,12 @@ public class Analysis {
         this.sequence = sequence;
     }
 
-    public double getFrequency(Element e) {
+    /**
+     * returns the relative proability
+     * @param e
+     * @return
+     */
+    public double getRelativeProbability(Element e) {
         double divident = sequenceLength / getTupel();
 
         return (double)getFrequencies().getOrDefault(e,0) / divident;

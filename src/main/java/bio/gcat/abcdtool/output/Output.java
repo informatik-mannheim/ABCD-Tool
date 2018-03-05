@@ -74,7 +74,7 @@ public class Output {
                     double relativeFrequency = ((double) analyzedTupels.get(column / 2).getOrDefault(current, 0));
                     int tupelLength = analyses.get(column / 2).getTupel();
                     relativeFrequency = relativeFrequency / ((double) sequenceLength / (double) tupelLength);
-                    relativeFrequency = analyses.get(column / 2).getFrequency(current);
+                    relativeFrequency = analyses.get(column / 2).getRelativeProbability(current);
                     if (relativeFrequency == 0) {
                         table[column][row] = "";
                     } else {
@@ -266,12 +266,13 @@ public class Output {
         createHTMLOutput();
 //       createTexOutput();
         createBoxWhisker();
-        createStandardErrorFile();
+//        createStandardErrorFile();
         createFileA();
         createFileAllProbabilities();
         createSkewFile();
-//        createExcelOutput();
+        createExcelOutput();
         createStandardDevFile();
+        createMinMaxFile();
 //        this.toBarChart();
 
 
@@ -320,6 +321,26 @@ public class Output {
         out.println(this.getName() + "T : " + frequencyT);
         out.println(this.getName() + "G : " + frequencyG);
         out.println(this.getName() + "C : " + frequencyC);
+        out.close();
+
+    }
+
+    /**
+     * writes the difference between the minimum and maximum probability of a sequence in the tupel sizes
+     * @throws FileNotFoundException
+     */
+    private void createMinMaxFile() throws FileNotFoundException {
+        File f = new File(getOutputPathAfile() + "minMax.txt");
+        if (!f.exists()) {
+            f.getParentFile().mkdirs();
+        }
+        PrintWriter out = new PrintWriter(new FileOutputStream(
+                f,
+                true));
+//        double frequencyA = this.getAnalyses().get(0).getFrequencies().get(new Element('A', 0));
+//        double minA=0;
+        double[] minMax= Statistics.getMaximumandMinimumFrequency(this.getAnalyses(),'A');
+        out.println(this.getName() +" : "+ this.getAnalyses().get(0).getSequenceLength() +": size,min,max : " + minMax[0]+ " : "+minMax[1] );
         out.close();
 
     }

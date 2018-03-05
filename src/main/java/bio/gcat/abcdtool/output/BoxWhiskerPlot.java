@@ -34,7 +34,7 @@ public class BoxWhiskerPlot extends ApplicationFrame {
         System.out.println(title);
         final BoxAndWhiskerCategoryDataset dataset = createDataset(o, base);
 
-        final CategoryAxis xAxis = new CategoryAxis("Tupel");
+        final CategoryAxis xAxis = new CategoryAxis("Tuple size");
         final NumberAxis yAxis = new NumberAxis("Frequency");
         yAxis.setAutoRangeIncludesZero(false);
 //        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
@@ -89,7 +89,7 @@ public class BoxWhiskerPlot extends ApplicationFrame {
             for (Element e : a.getFrequencies().keySet()) {
                 if (e.getBase() == base) {
                     double value = (double) a.getFrequencies().get(e) / divident;
-                    value = a.getFrequency(e);
+                    value = a.getRelativeProbability(e);
 //                    if (value < 0.319 || value > 0.3227  ) {
 //                        System.out.println("zero at" + e + "frequency is " + a.getFrequencies().get(e)
 //                                + "the value is " + value);

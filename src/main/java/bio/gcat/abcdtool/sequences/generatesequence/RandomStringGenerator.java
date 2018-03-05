@@ -65,12 +65,13 @@ public class RandomStringGenerator implements RandomString {
     }
 
     public String randomConditionalProbabiliteisString(int length, boolean cgIsland) { // TOOO : change from boolean to int or enum
+        double[][]conditionalProb= new double[4][4];
         for (int i = 0; i< condProbabiltiesHuman1.length; i++){
             for(int j = 0; j< condProbabiltiesHuman1.length; j++){
-                condProbabiltiesHuman1[i][j]= condProbabiltiesHuman1[i][j]/100;
+                conditionalProb[i][j]= condProbabiltiesHuman1[i][j]/100;
             }
         }
-        return randomConditionalProbabiliteisString(length, condProbabiltiesHuman1);
+        return randomConditionalProbabiliteisString(length, conditionalProb);
 //        StringBuilder s = new StringBuilder();
 //        String digit = randomString(1);
 //        s.append(digit);

@@ -37,7 +37,7 @@ public class CreateAverageSkew {
             double average = getAverage(frequencies);
             averageValues.put(s, average);
         }
-        File ATSkew = new File("Output/ATSKEWHOMOMean.txt");
+        File ATSkew = new File("Output/ATSKEWMeanRest.txt");
         if (!ATSkew.exists()) {
             ATSkew.getParentFile().mkdirs();
         }
