@@ -56,13 +56,12 @@
         </plugins>
     </build>
     <dependencies>
-    <dependency>
+  <!--  <dependency>
         <groupId>org.jfree</groupId>
         <artifactId>jfreechart</artifactId>
         <version>1.5.1</version>
-        <systemPath>${project.basedir}/lib/target/jfreechart-1.5.1.jar</systemPath>
 
-    </dependency>
+    </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
