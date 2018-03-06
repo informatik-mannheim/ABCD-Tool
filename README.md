@@ -1,8 +1,10 @@
 README
 
-Clone the repository with
-`git clone --recurse-submodules <url>`
+*clone the Jfreechart fork with*
+`git clone https://github.com/AliKarpuzoglu/jfreechart`
  
-JFreeChart is included as a submodule. Run
-`git submodule update --init --recursive`
-to init this submodule. This has to be done only once.
+*build and deploy JFreeChart.*
+`mvn install
+mvn deploy`
+
+then clone this repository
