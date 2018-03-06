@@ -6,7 +6,7 @@
 
     <groupId>groupId</groupId>
     <artifactId>abcd-tool</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <build>
         <plugins>
             <plugin>
@@ -26,7 +26,9 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>bio.gcat.abcdtool.main.BatchRunner</mainClass>
+                            <mainClass>
+                                bio.gcat.abcdtool.main.BatchRunner
+                            </mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -42,11 +44,14 @@
                         <phase>package</phase>
                         <configuration>
                             <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                                <descriptorRef>jar-with-dependencies
+                                </descriptorRef>
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>bio.gcat.abcdtool.main.BatchRunner</mainClass>
+                                    <mainClass>
+                                        bio.gcat.abcdtool.main.BatchRunner
+                                    </mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
@@ -56,13 +61,11 @@
         </plugins>
     </build>
     <dependencies>
-    <dependency>
-        <groupId>org.jfree</groupId>
-        <artifactId>jfreechart</artifactId>
-        <version>1.5.1</version>
-        <systemPath>${project.basedir}/lib/target/jfreechart-1.5.1.jar</systemPath>
-
-    </dependency>
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart-mod</artifactId>
+            <version>1.5.0</version>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -103,9 +106,9 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
         <dependency>
-        <groupId>org.apache.poi</groupId>
-        <artifactId>poi</artifactId>
-        <version>3.17</version>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.17</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
@@ -124,10 +127,5 @@
             <artifactId>commons-math3</artifactId>
             <version>3.0</version>
         </dependency>
-
     </dependencies>
-
-
-
-
 </project>
