@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class BatchRunner {
     /**
-     * this runs all files that are passed to it,
-     * if a folder is passed, it will run our program on all the files in the folder
+     * this runs all FastA files that are passed to it,
+     * if a folder is passed, it will run our program on all the FastA files in the folder
      *
      * @param args Folder or file names.
      */
