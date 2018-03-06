@@ -8,6 +8,7 @@
     <artifactId>abcd-tool</artifactId>
     <version>1.0.0</version>
     <build>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

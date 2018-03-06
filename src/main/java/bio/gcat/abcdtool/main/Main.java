@@ -18,28 +18,43 @@ import java.util.Set;
  * @author Markus Gumbel (m.gumbel@hs-mannheim.de)
  */
 public class Main {
-    public static void main(String[] args) throws IOException {
-        String filePath = args[0];
-        System.out.println("running file " + args[0]);
-        long sTime = System.currentTimeMillis();
-        FastFastaLoader fastaFile = new FastFastaLoader(new File(filePath));
-        Map<String, Sequence<NucleotideCompound>> entries =
-                fastaFile.fastaEntries();
-        double msec = (System.currentTimeMillis() - sTime) / (1.0 * entries.size());
-        System.out.println("|samples| = " + entries.size() + " (" + msec + " ms/read)");
+  public static void main(String[] args) throws IOException {
+    if (args.length < 1) {
+      System.out.println("usage: args");
+      System.out.println("1.: <file> (valid path)");
+      System.out.println("2.: random|randomconditional|normal|N (normal is default)");
+      System.out.println("Info:");
+      System.out.println("<file>: a dna sequence in FastA format");
+      System.out.println("random: complete random sequence according to " +
+              "base distribution in homo sapiens, chr. 1");
+      System.out.println("randomconditional: random sequence with conditional " +
+              "probabilities as calculated in the sequence (param 1)");
+      System.out.println("normal: regular analysis (default)");
+      System.out.println("N: Split analysis where sequence is " +
+              "split into N parts.");
+      System.exit(0);
+    }
+    String filePath = args[0];
+    System.out.println("running file " + args[0]);
+    long sTime = System.currentTimeMillis();
+    FastFastaLoader fastaFile = new FastFastaLoader(new File(filePath));
+    Map<String, Sequence<NucleotideCompound>> entries =
+            fastaFile.fastaEntries();
+    double msec = (System.currentTimeMillis() - sTime) / (1.0 * entries.size());
+    System.out.println("|samples| = " + entries.size() + " (" + msec + " ms/read)");
 
-        for (int i = 1; i <= 20; i++) {
-            System.out.print(i + ",");
-        }
-        Set<Map.Entry<String, Sequence<NucleotideCompound>>> g = entries.entrySet();
-        for (Map.Entry<String, Sequence<NucleotideCompound>> map : g) {
-            String sequence = map.getValue().getSequenceAsString();
+    for (int i = 1; i <= 20; i++) {
+      System.out.print(i + ",");
+    }
+    Set<Map.Entry<String, Sequence<NucleotideCompound>>> g = entries.entrySet();
+    for (Map.Entry<String, Sequence<NucleotideCompound>> map : g) {
+      String sequence = map.getValue().getSequenceAsString();
 
-            String name = map.getKey();
+      String name = map.getKey();
 
 //double[][] covariance = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
 
-            /// RANDOMNESS
+      /// RANDOMNESS
 //            name = "NRandomCo 250 mio";
 //            sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(250000000,true);
 
@@ -65,22 +80,22 @@ public class Main {
 //              e.printStackTrace();
 //          }
 
-            if (args.length >= 2) {
-                if (args[1].equalsIgnoreCase("random")) {
-                    analyzeRandom();
-                }
-                if (args[1].equalsIgnoreCase("randomconditional")) {
-                    double[][] condProbabilities = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
-                    sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(sequence.length(), condProbabilities);
-                    analyze(name + "random", sequence);
-                }
-                if (args[1].equalsIgnoreCase("normal")) {
-                    analyze(name, sequence);
-                }
-                if (args[1].equalsIgnoreCase("N")) {
-                    analyzeN(name, sequence);
-                }
-            } else {
+      if (args.length >= 2) {
+        if (args[1].equalsIgnoreCase("random")) {
+          analyzeRandom();
+        }
+        if (args[1].equalsIgnoreCase("randomconditional")) {
+          double[][] condProbabilities = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
+          sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(sequence.length(), condProbabilities);
+          analyze(name + "random", sequence);
+        }
+        if (args[1].equalsIgnoreCase("normal")) {
+          analyze(name, sequence);
+        }
+        if (args[1].equalsIgnoreCase("N")) {
+          analyzeN(name, sequence);
+        }
+      } else {
 //                double[][] condProbabilities = new createConditionalProbabilities().createConditionalProbbabilityMatrix(sequence);
 //                for(int i=0;i<1;i++){
 
@@ -89,78 +104,78 @@ public class Main {
 //                for (int i = 0; i < 20; i++) {
 //                System.out.println/("analyzing" + name);
 //                    sequence = new RandomStringGenerator().randomConditionalProbabiliteisString(sequence.length(), condProbabilities);
-                    analyze(name , sequence);
+        analyze(name, sequence);
 //                }
 
 
-            }
-        }
-        System.out.println("the calculation took " + ((System.currentTimeMillis() - sTime) / 1000) + "seconds");
+      }
     }
+    System.out.println("the calculation took " + ((System.currentTimeMillis() - sTime) / 1000) + "seconds");
+  }
 
-    /**
-     * Analyze Random sequences
-     *
-     * @throws IOException
-     */
-    public static void analyzeRandom() throws IOException {
-        for (int j = 1; j < 2; j=j+10) {
+  /**
+   * Analyze Random sequences
+   *
+   * @throws IOException
+   */
+  public static void analyzeRandom() throws IOException {
+    for (int j = 1; j < 2; j = j + 10) {
 
 
-            String tempName = "RandomCo 250 million";
-            System.out.println("start" + tempName);
-            int size = 250000000;
-            String tempString = new RandomStringGenerator().randomConditionalProbabiliteisString(size, true);
+      String tempName = "RandomCo 250 million";
+      System.out.println("start" + tempName);
+      int size = 250000000;
+      String tempString = new RandomStringGenerator().randomConditionalProbabiliteisString(size, true);
 
-            System.out.println("end" + tempName);
-            analyze(tempName, tempString);
-        }
-        for (int j = 1; j <2; j++) {
-            String tempName = "Random250mio " + j;
-            System.out.println("start" + tempName);
-            String tempString = new RandomStringGenerator().randomString(250000000);
-            analyze(tempName, tempString);
-            System.out.println("end" + tempName);
-        }
+      System.out.println("end" + tempName);
+      analyze(tempName, tempString);
     }
+    for (int j = 1; j < 2; j++) {
+      String tempName = "Random250mio " + j;
+      System.out.println("start" + tempName);
+      String tempString = new RandomStringGenerator().randomString(250000000);
+      analyze(tempName, tempString);
+      System.out.println("end" + tempName);
+    }
+  }
 
-    /**
-     * Analyze the sequence by splitting it into 1/n chunks
-     *
-     * @param name
-     * @param sequence
-     * @throws IOException
-     */
-    public static void analyzeN(String name, String sequence) throws IOException {
-        //create analyses for each 1/N piece
-        for (int n = 1; n <= 4; n++) {
-            for (int i = 0; i < n; i++) {
-                String nameN = name + " split" + n + " part " + (i + 1);
-                int length = sequence.length();
-                int begin = (length / n) * i;
-                int end = (length / n) * (i + 1);
+  /**
+   * Analyze the sequence by splitting it into 1/n chunks
+   *
+   * @param name
+   * @param sequence
+   * @throws IOException
+   */
+  public static void analyzeN(String name, String sequence) throws IOException {
+    //create analyses for each 1/N piece
+    for (int n = 1; n <= 4; n++) {
+      for (int i = 0; i < n; i++) {
+        String nameN = name + " split" + n + " part " + (i + 1);
+        int length = sequence.length();
+        int begin = (length / n) * i;
+        int end = (length / n) * (i + 1);
 //                System.out.println("begin : "+begin + "end : "+end);
-                String sequenceN = sequence.substring(begin, end);
-                analyze(nameN, sequenceN);
-            }
-        }
-
+        String sequenceN = sequence.substring(begin, end);
+        analyze(nameN, sequenceN);
+      }
     }
 
-    /**
-     * create a normal analysis
-     *
-     * @param name
-     * @param sequence
-     * @throws IOException
-     */
-    public static void analyze(String name, String sequence) throws IOException {
+  }
+
+  /**
+   * create a normal analysis
+   *
+   * @param name
+   * @param sequence
+   * @throws IOException
+   */
+  public static void analyze(String name, String sequence) throws IOException {
 //        name = name+"shortened" ;
-        Output output = new Output(name);
+    Output output = new Output(name);
 //        for (int j = 1; j <= 20; j++) {//NOT 0
-        int[] toCheck = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 50};
-        for (int j : toCheck) {
-            System.out.println("analyzing " + j);
+    int[] toCheck = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 50};
+    for (int j : toCheck) {
+      System.out.println("analyzing " + j);
 //            System.out.println("first string length = " + sequence.length());
 
 
@@ -170,49 +185,49 @@ public class Main {
 
 //            String tempsequence = createSequence(sequence, j);
 //            String tempsequence = createFirstNSequence(sequence, j);
-            Analysis analysis = new Analysis(sequence, j);
-            System.out.println(analysis.getSequenceLength());
+      Analysis analysis = new Analysis(sequence, j);
+      System.out.println(analysis.getSequenceLength());
 //                Analysis analysis = new Analysis(tempsequence, j);
 
-            System.out.println("analysis ended" + j);
-            output.addAnalysis(analysis);
-            analysis.setSequence(null); // clear up some memory -running out of heap space otherwise
+      System.out.println("analysis ended" + j);
+      output.addAnalysis(analysis);
+      analysis.setSequence(null); // clear up some memory -running out of heap space otherwise
 //            System.out.println("done with " + j + "it took : " + (System.currentTimeMillis() - timeNow) + "ms");
-        }
-        output.createOutputs();
-
-
     }
+    output.createOutputs();
 
-    /**
-     * take the first size letters of a sequence
-     *
-     * @param sequence
-     * @param size     the length of the desired string
-     * @return
-     */
-    public static String createFirstNSequence(String sequence, int size) {
+
+  }
+
+  /**
+   * take the first size letters of a sequence
+   *
+   * @param sequence
+   * @param size     the length of the desired string
+   * @return
+   */
+  public static String createFirstNSequence(String sequence, int size) {
 //        sequence= sequence.replaceAll("N","");
-        System.out.println(sequence.substring(0, 10));
-        int stringlength = (int) (sequence.length() / ((double) 20 / size));
+    System.out.println(sequence.substring(0, 10));
+    int stringlength = (int) (sequence.length() / ((double) 20 / size));
 
 
-        return sequence.substring(0, stringlength);
+    return sequence.substring(0, stringlength);
 //
-    }
+  }
 
-    /**
-     * create a random sequence of size j
-     *
-     * @param sequence
-     * @param size     the length of the desired string
-     * @return
-     */
-    public static String createSequence(String sequence, int size) {
+  /**
+   * create a random sequence of size j
+   *
+   * @param sequence
+   * @param size     the length of the desired string
+   * @return
+   */
+  public static String createSequence(String sequence, int size) {
 //        return sequence.substring(0,sequence.length()/(20/j));
-        int stringlength = (int) (sequence.length() / ((double) 100 / size));
+    int stringlength = (int) (sequence.length() / ((double) 100 / size));
 
-        String sequ = "";
+    String sequ = "";
 
 //        do {
 //            int startIndex = (int) (Math.random() * (stringlength));
@@ -223,17 +238,17 @@ public class Main {
 //
 //        return sequ;
 //        StringBuilder temp = new StringBuilder();
-        int sequenceLength = sequence.length();
-        int position = (int) (Math.random() * (sequenceLength - stringlength));
-        System.out.println("new String length = " + stringlength);
-        return sequence.substring(position, position + stringlength);
+    int sequenceLength = sequence.length();
+    int position = (int) (Math.random() * (sequenceLength - stringlength));
+    System.out.println("new String length = " + stringlength);
+    return sequence.substring(position, position + stringlength);
 //       for(int i =0;i<stringlength/20;i++ ) {
 //           int position = (int)(Math.random()*(sequenceLength-stringlength));
 //           temp.append(sequence.substring(position,position+stringlength));
 //       }
 //        System.out.println( "finished string of length" + stringlength);
 //       return temp.toString();
-    }
+  }
 }
 
 
