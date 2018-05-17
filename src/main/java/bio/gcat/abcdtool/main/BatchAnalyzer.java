@@ -6,8 +6,9 @@ import java.io.IOException;
 
 public class BatchAnalyzer {
   /**
-   * this runs all FastA files that are passed to it,
-   * if a folder is passed, it will run our program on all the FastA files in the folder
+   * This runs all FastA files that are passed to it.
+   * If a folder is passed, it will run Analyze on all the FastA files
+   * found in the sub (!) folders.
    *
    * @param args Folder or file names.
    */
@@ -19,46 +20,25 @@ public class BatchAnalyzer {
         File[] files = f.listFiles();
         for (File file : files) {
           if (file.isDirectory()) {
-
-            System.out.println("running folder" + file.getAbsolutePath());
-//                        Thread t = new Thread(() -> runFolder(file));
-//                        t.run();
+            System.out.println("Running folder" + file.getAbsolutePath());
             runFolder(file);
           }
-
-
         }
-
       } else if (f.isFile()) {
         if (!f.getName().endsWith(".fasta")) {
           continue;
         }
 
-
-        System.out.println("running " + s);
+        System.out.println("Running " + s);
         f = null;
-//                Thread t = new Thread(() -> {
-//                    try {
-//
-//                        System.out.println("running  now : " + s);
-//                        Analyze.main(new String[]{s});
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                });
-//                t.run();
         try {
-//
-          System.out.println("running  now : " + s);
           Analyze.main(new String[]{s});
         } catch (IOException e) {
           e.printStackTrace();
         }
       }
     }
-
   }
-
 
   public static void runFolder(File folder) {
     try {
@@ -72,6 +52,5 @@ public class BatchAnalyzer {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
 }

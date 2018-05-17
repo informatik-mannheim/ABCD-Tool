@@ -1,12 +1,13 @@
 package bio.gcat.abcdtool.gatherfiles;
 
 /**
- * A class that saves the name and id of the sequences for the
- * batch downloader
+ * A class that saves the name and id of GenBank sequences;
+ * primarily for the batch downloader.
  */
-public class Sequence {
-  String name;
-  String id;
+public class GenbankSequence {
+  private String name;
+  private String id;
+  private String url;
 
   public String getName() {
     return name;
@@ -24,15 +25,6 @@ public class Sequence {
     this.id = id;
   }
 
-  @Override
-  public String toString() {
-    return "Sequence{" +
-            "name='" + name + '\'' +
-            ", id='" + id + '\'' +
-            ", url='" + url + '\'' +
-            '}';
-  }
-
   public String getUrl() {
     return url;
   }
@@ -41,7 +33,14 @@ public class Sequence {
     this.url = url;
   }
 
-  String url;
+  @Override
+  public String toString() {
+    return "Sequence{" +
+            "name='" + name + '\'' +
+            ", id='" + id + '\'' +
+            ", url='" + url + '\'' +
+            '}';
+  }
 
   public String getSpecies() {
     return getSpecies(getName());
@@ -64,7 +63,7 @@ public class Sequence {
       return "Random DNA";
     }
 
-    //could also say return split("chromosome")[0] for most of them
+    // Could also say return split("chromosome")[0] for most of them:
     return "SomeSpecies";
   }
 }

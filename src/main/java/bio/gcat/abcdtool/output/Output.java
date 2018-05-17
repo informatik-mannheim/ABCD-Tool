@@ -3,7 +3,7 @@ package bio.gcat.abcdtool.output;
 import bio.gcat.abcdtool.analysis.NPletAnalysis;
 import bio.gcat.abcdtool.sequences.reader.Element;
 import bio.gcat.abcdtool.analysis.Statistics;
-import bio.gcat.abcdtool.gatherfiles.Sequence;
+import bio.gcat.abcdtool.gatherfiles.GenbankSequence;
 
 import java.awt.*;
 import java.io.*;
@@ -36,7 +36,7 @@ public class Output {
   }
 
   public String getShortName() {
-    return Sequence.getSpecies(name);
+    return GenbankSequence.getSpecies(name);
   }
 
   public List<Map<Element, Integer>> getAnalyzedTupels() {
@@ -422,8 +422,8 @@ public class Output {
    * @throws FileNotFoundException
    */
   private void createSkewFile() throws FileNotFoundException { //todo: refactor?
-    File fileAT = new File(getOutputPathAfile() + "ATSkew.txt");
-    File fileGC = new File(getOutputPathAfile() + "GCSkew.txt");
+    File fileAT = new File(getOutputPathAfile() + "ATSkew.csv");
+    File fileGC = new File(getOutputPathAfile() + "GCSkew.csv");
     if (!fileAT.exists()) {
       fileAT.getParentFile().mkdirs();
     }
@@ -437,7 +437,6 @@ public class Output {
             fileAT,
             true));
 
-
     double frequencyA = this.getAnalyses().get(0).getFrequencies().get(new Element('A', 0));
     double frequencyT = this.getAnalyses().get(0).getFrequencies().get(new Element('T', 0));
     double frequencyG = this.getAnalyses().get(0).getFrequencies().get(new Element('G', 0));
@@ -446,12 +445,11 @@ public class Output {
     double frequencyAT = (frequencyA - frequencyT) / (frequencyA + frequencyT);
     double frequencyGC = (frequencyC - frequencyG) / (frequencyC + frequencyG);
 
-    outAT.println(this.getName() + " : " + frequencyAT);
+    outAT.println(this.getName() + ";" + frequencyAT);
     outAT.close();
 
-    outGC.println(this.getName() + " : " + frequencyGC);
+    outGC.println(this.getName() + ";" + frequencyGC);
     outGC.close();
-
   }
 
   /**
@@ -471,7 +469,6 @@ public class Output {
         f.getParentFile().mkdirs();
       }
       SVGUtils.writeToSVG(f, g2.getSVGElement());
-
     }
   }
 
@@ -544,7 +541,7 @@ public class Output {
    * @return
    */
   public String getOutputPath(String name, String type) {
-    String speciesName = Sequence.getSpecies(name);
+    String speciesName = GenbankSequence.getSpecies(name);
 //        Calendar calendar = Calendar.getInstance();
 //        calendar.setTimeInMillis(System.currentTimeMillis());
     String date = new Timestamp(System.currentTimeMillis()).toLocalDateTime().toLocalDate().toString();
