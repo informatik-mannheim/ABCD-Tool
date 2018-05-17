@@ -48,8 +48,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 
-import bio.gcat.abcdtool.analysis.Analysis;
-import bio.gcat.abcdtool.sequences.readsequence.Element;
+import bio.gcat.abcdtool.analysis.NPletAnalysis;
+import bio.gcat.abcdtool.sequences.reader.Element;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -116,10 +116,10 @@ public class Barchart extends ApplicationFrame {
      * @return
      */
     private CategoryDataset createDataset(Output o, char base) {
-        List<Analysis> analyses = o.getAnalyses();
+        List<NPletAnalysis> analyses = o.getAnalyses();
         String[] tupelLengths = new String[analyses.size()];
         for (int i = 0; i < tupelLengths.length; i++) {
-            tupelLengths[i] = "" + analyses.get(i).getTupel();
+            tupelLengths[i] = "" + analyses.get(i).getnPletSize();
         }
 
         int sequenceLength=0;
@@ -145,8 +145,8 @@ public class Barchart extends ApplicationFrame {
         }
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         int i = 0;
-        for (Analysis a : analyses) {
-            double value = a.getAverage()[index] / (sequenceLength / a.getTupel()); //TODO: create a graph for sth other than A
+        for (NPletAnalysis a : analyses) {
+            double value = a.getAverage()[index] / (sequenceLength / a.getnPletSize()); //TODO: create a graph for sth other than A
             dataset.addValue(value, series, tupelLengths[i++]);
         }
         return dataset;

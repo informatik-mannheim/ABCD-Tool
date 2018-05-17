@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import bio.gcat.abcdtool.analysis.Analysis;
-import bio.gcat.abcdtool.sequences.readsequence.Element;
+import bio.gcat.abcdtool.analysis.NPletAnalysis;
+import bio.gcat.abcdtool.sequences.reader.Element;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -65,20 +65,20 @@ public class Scatterplot extends JFrame {
         //Boys (Age,weight) series
         String baseString = "" + base;
         XYSeries series1 = new XYSeries(baseString);
-        List<Analysis> analyses = o.getAnalyses();
+        List<NPletAnalysis> analyses = o.getAnalyses();
 
 
-        for (Analysis a : analyses) {
+        for (NPletAnalysis a : analyses) {
             int sequenceLength = 0; // we cant just take the string length because of all the unknown bases
             for (Element e : a.getFrequencies().keySet()) {
                 sequenceLength += a.getFrequencies().get(e);
             }
-            double divident = sequenceLength / a.getTupel();
+            double divident = sequenceLength / a.getnPletSize();
             for (Element e : a.getFrequencies().keySet()) {
                 if (e.getBase() == base) {
                     double value = (double)a.getFrequencies().get(e) / divident;
 
-                    series1.add(a.getTupel(), value);
+                    series1.add(a.getnPletSize(), value);
                 }
             }
 

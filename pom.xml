@@ -28,7 +28,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>
-                                bio.gcat.abcdtool.main.BatchRunner
+                                bio.gcat.abcdtool.main.BatchAnalyzer
                             </mainClass>
                         </manifest>
                     </archive>
@@ -51,7 +51,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        bio.gcat.abcdtool.main.BatchRunner
+                                        bio.gcat.abcdtool.main.BatchAnalyzer
                                     </mainClass>
                                 </manifest>
                             </archive>
