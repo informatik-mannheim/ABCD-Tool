@@ -6,22 +6,29 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Calculates the distribution of n-plets for a sequence.
  * @author Markus Gumbel (m.gumbel@hs-mannheim.de)
  */
 public class NPletsAnalysis {
 
-  private String name;
+  private String seqId;
   private String seq;
   private List<Integer> tupleSizes;
 
-  public NPletsAnalysis(String name, String seq, List<Integer> nPletSizes) {
-    this.name = name;
+  /**
+   *
+   * @param seqId Sequence ID
+   * @param seq Sequence of nucleotides
+   * @param nPletSizes  Size of the n-plets
+   */
+  public NPletsAnalysis(String seqId, String seq, List<Integer> nPletSizes) {
+    this.seqId = seqId;
     this.seq = seq;
     this.tupleSizes = nPletSizes;
   }
 
-  public String getName() {
-    return name;
+  public String getSeqId() {
+    return seqId;
   }
 
   public String getSequence() {
@@ -33,8 +40,9 @@ public class NPletsAnalysis {
   }
 
   public void analyze() {
-    // name = name+"shortened" ;
-    Output output = new Output(name);
+    // seqId = seqId+"shortened" ;
+    Output output = new Output(seqId);
+
     for (int nPletSize : getNPletSizes()) {
       System.out.println("Analyzing n-plet size " + nPletSize + " ...");
 
@@ -45,9 +53,9 @@ public class NPletsAnalysis {
       System.out.println(analysis.getSequenceLength());
       System.out.println("Analyzing n-plet size " + nPletSize + " done.");
       output.addAnalysis(analysis);
-      // TODO really needed?
+      // TODO really needed? Seems to be a bug.
       // Clear up some memory - running out of heap space otherwise:
-      analysis.setSequence(null);
+      // analysis.setSequence(null);
       // System.out.println("done with " + j + "it took : " + (System.currentTimeMillis() - timeNow) + "ms");
     }
     try {

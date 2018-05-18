@@ -2,44 +2,46 @@ package bio.gcat.abcdtool.sequences.reader;
 
 /**
  * Our analyzed value,
- * saving the letter and position
+ * saving the letter and position.
+ *
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  */
 public class Element {
-    char base;
-    int pos;
+  char base;
+  int pos;
 
-    public Element(char base, int pos) {
-        this.base = base;
-        this.pos = pos;
-    }
+  public Element(char base, int pos) {
+    this.base = base;
+    this.pos = pos;
+  }
 
-    public char getBase() {
-        return base;
-    }
+  public char getBase() {
+    return base;
+  }
 
-    @Override
-    public String toString() {
-        return "Element{" +
-                "base=" + base +
-                ", pos=" + pos +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Element{" +
+            "base=" + base +
+            ", pos=" + pos +
+            '}';
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        Element element = (Element) o;
+    Element element = (Element) o;
 
-        if (base != element.base) return false;
-        return pos == element.pos;
-    }
+    if (base != element.base) return false;
+    return pos == element.pos;
+  }
 
-    @Override
-    public int hashCode() {
-        int result = (int) base;
-        result = 31 * result + pos;
-        return result;
-    }
+  @Override
+  public int hashCode() {
+    int result = (int) base;
+    result = 31 * result + pos;
+    return result;
+  }
 }

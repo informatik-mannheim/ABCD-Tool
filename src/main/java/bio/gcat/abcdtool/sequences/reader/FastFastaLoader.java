@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * Reads a fasta file and returns a biojava compatible sequence.
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  */
 public class FastFastaLoader {
   File file;

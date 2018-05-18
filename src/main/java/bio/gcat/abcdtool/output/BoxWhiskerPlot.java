@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * create a box whisker plot using JFreechart
+ * Create a box whisker plot.
+ *
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  */
 public class BoxWhiskerPlot extends ApplicationFrame {
   public JFreeChart getChart() {
@@ -27,9 +29,13 @@ public class BoxWhiskerPlot extends ApplicationFrame {
 
   private JFreeChart chart;
 
-
+  /**
+   * TODO
+   * @param title
+   * @param o
+   * @param base
+   */
   public BoxWhiskerPlot(final String title, Output o, char base) {
-
     super(title);
     System.out.println(title);
     final BoxAndWhiskerCategoryDataset dataset = createDataset(o, base);
@@ -65,21 +71,15 @@ public class BoxWhiskerPlot extends ApplicationFrame {
     final ChartPanel chartPanel = new ChartPanel(chart);
     chartPanel.setPreferredSize(new Dimension(450, 270));
     setContentPane(chartPanel);
-
   }
 
   private BoxAndWhiskerCategoryDataset createDataset(Output o, char base) {
-
-
     final DefaultBoxAndWhiskerCategoryDataset dataset
             = new DefaultBoxAndWhiskerCategoryDataset();
 
     // add some values...
-
-
     String baseString = "" + base;
     List<NPletAnalysis> analyses = o.getAnalyses();
-
 
     for (NPletAnalysis a : analyses) {
       List<Double> list = new ArrayList<>();

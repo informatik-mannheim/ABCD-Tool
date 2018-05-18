@@ -3,6 +3,7 @@ package bio.gcat.abcdtool.gatherfiles;
 /**
  * A class that saves the name and id of GenBank sequences;
  * primarily for the batch downloader.
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  */
 public class GenbankSequence {
   private String name;

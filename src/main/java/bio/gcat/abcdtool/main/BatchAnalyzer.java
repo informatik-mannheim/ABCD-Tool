@@ -3,7 +3,10 @@ package bio.gcat.abcdtool.main;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * TODO documentation.
+ *  @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
+ */
 public class BatchAnalyzer {
   /**
    * This runs all FastA files that are passed to it.

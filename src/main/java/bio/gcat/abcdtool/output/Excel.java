@@ -12,26 +12,31 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Write a table into an excel file. The table here is generated in the Output class
+ * Write a table of n-plets analyses into an excel file.
+ * The table here is generated in the Output class.
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  */
 public class Excel {
   List<NPletAnalysis> analyses;
   String[][] table;
 
-
+  /**
+   * TODO
+   * @param table
+   * @param analyses
+   */
   public Excel(String[][] table, List<NPletAnalysis> analyses) {
     this.table = table;
     this.analyses = analyses;
   }
 
-
-  public void writeFile(String excel) {
-    File file = new File(excel);
+  public void writeFile(String excelFilename) {
+    File file = new File(excelFilename);
     file.getParentFile().mkdirs();
     HSSFWorkbook workbook = writeTable();
     FileOutputStream fileOut = null;
     try {
-      fileOut = new FileOutputStream(excel);
+      fileOut = new FileOutputStream(excelFilename);
       workbook.write(fileOut);
       fileOut.close();
       System.out.println("Excel file has been created.");
@@ -40,7 +45,6 @@ public class Excel {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
 
   private HSSFWorkbook writeTable() {
@@ -56,7 +60,6 @@ public class Excel {
       for (int j = 0; j < table.length; j++) {
         row.createCell(j).setCellValue(table[j][i]);
       }
-
     }
     return workbook;
   }

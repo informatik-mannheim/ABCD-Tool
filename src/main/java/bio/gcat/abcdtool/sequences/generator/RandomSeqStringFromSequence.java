@@ -1,5 +1,10 @@
 package bio.gcat.abcdtool.sequences.generator;
 
+/**
+ * TODO docs
+ * TODO is it used anyway?
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
+ */
 public class RandomSeqStringFromSequence {
 
   /**

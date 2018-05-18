@@ -19,41 +19,58 @@ import org.jfree.graphics2d.svg.SVGUtils;
 
 /**
  * The different ways to output our analyses.
+ * TODO split into more than one class for better reading?
+ *
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  */
 public class Output {
-  private List<Map<Element, Integer>> analyzedTupels;
   private List<NPletAnalysis> analyses;
-  private String name;
+  /**
+   * TODO docs
+   */
+  private List<Map<Element, Integer>> analyzedTupels;
+  private String seqId;
 
-  public List<NPletAnalysis> getAnalyses() {
-    return analyses;
-  }
-
-  public Output(String name) {
-    this.name = name;
+  /**
+   * @param seqId
+   */
+  public Output(String seqId) {
+    this.seqId = seqId;
     analyzedTupels = new ArrayList<>();
     analyses = new ArrayList<>();
   }
 
   public String getShortName() {
-    return GenbankSequence.getSpecies(name);
+    return GenbankSequence.getSpecies(seqId);
+  }
+
+  public String getSeqId() {
+    return seqId;
+  }
+
+  public void addAnalysis(NPletAnalysis analysis) {
+    analyzedTupels.add(analysis.getFrequencies());
+    analyses.add(analysis);
+  }
+
+  public List<NPletAnalysis> getAnalyses() {
+    return analyses;
   }
 
   public List<Map<Element, Integer>> getAnalyzedTupels() {
     return analyzedTupels;
   }
 
-
   public String[][] getAsTable() {
 
-/* only needed if lengths in input are not in ascending order
+  /* only needed if lengths in input are not in ascending order
         analyzedTupels.sort(new Comparator<Map<Element, Integer>>() {
             @Override
             public int compare(Map<Element, Integer> o1, Map<Element, Integer> o2) {
                 return o1.entrySet().size() - o2.entrySet().size();
             }
-        });*/
-
+        });
+        */
 
     char[] elements = {'A', 'T', 'G', 'C'};
     int lengthOfLongestSequence = analyzedTupels.get(analyzedTupels.size() - 1).size(); //gets the different values of the longest n-plet
@@ -61,11 +78,8 @@ public class Output {
     for (int column = 0; column < table.length; column++) {
       int sequenceLength = analyses.get(column / 2).getSequenceLength();
       for (int row = 0; row < table[0].length; row++) {
-
         if (column % 2 == 0) {
           if (row < analyzedTupels.get(column / 2).size()) {
-
-
             table[column][row] = "P_{" + (analyses.get(column / 2).getnPletSize()) + "}(" + elements[row % 4] + "_{" + (row / 4 + 1) + "})=";
           }
         } else {
@@ -83,17 +97,16 @@ public class Output {
             table[column][row] = rounded + "";
           }
         }
-
       }
     }
     return table;
   }
 
-
   public String outputAsLatexTable() {
     String[][] table = getAsTable();
     StringBuilder output = new StringBuilder();
     output.append("\\begin{tabular}{");
+
     for (int column = 0; column < table.length; column++) {
       output.append("|c");
     }
@@ -111,11 +124,9 @@ public class Output {
             output.append(table[column][row]);
           }
         }
-
         if (column != table.length - 1) {
           output.append(" & ");
         }
-
       }
       output.append(" \\\\\n" +
               "\t\\hline \n");
@@ -226,20 +237,6 @@ public class Output {
 
   }
 
-
-  public void addAnalysis(NPletAnalysis analysis) {
-    analyzedTupels.add(analysis.getFrequencies());
-    analyses.add(analysis);
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
   /**
    * Some OS have problems with different letters.
    *
@@ -254,7 +251,7 @@ public class Output {
   }
 
   public void prepareNameForWriting() {
-    name = prepareNameForWriting(name);
+    seqId = prepareNameForWriting(seqId);
   }
 
   public void createOutputs() throws IOException {
@@ -288,7 +285,7 @@ public class Output {
             true));
     double frequency = this.getAnalyses().get(0).getFrequencies().get(new Element('A', 0));
     frequency = frequency / this.analyses.get(0).getSequenceLength();
-    out.println(this.getName() + " : " + frequency);
+    out.println(this.getSeqId() + " : " + frequency);
     out.close();
 
   }
@@ -314,10 +311,10 @@ public class Output {
     frequencyT = frequencyT / this.analyses.get(0).getSequenceLength();
     frequencyG = frequencyG / this.analyses.get(0).getSequenceLength();
     frequencyC = frequencyC / this.analyses.get(0).getSequenceLength();
-    out.println(this.getName() + "A : " + frequencyA);
-    out.println(this.getName() + "T : " + frequencyT);
-    out.println(this.getName() + "G : " + frequencyG);
-    out.println(this.getName() + "C : " + frequencyC);
+    out.println(this.getSeqId() + "A : " + frequencyA);
+    out.println(this.getSeqId() + "T : " + frequencyT);
+    out.println(this.getSeqId() + "G : " + frequencyG);
+    out.println(this.getSeqId() + "C : " + frequencyC);
     out.close();
 
   }
@@ -338,7 +335,7 @@ public class Output {
 //        double frequencyA = this.getAnalyses().get(0).getFrequencies().get(new Element('A', 0));
 //        double minA=0;
     double[] minMax = Statistics.getMaximumandMinimumFrequency(this.getAnalyses(), 'A');
-    out.println(this.getName() + " : " + this.getAnalyses().get(0).getSequenceLength() + ": size,min,max : " + minMax[0] + " : " + minMax[1]);
+    out.println(this.getSeqId() + " : " + this.getAnalyses().get(0).getSequenceLength() + ": size,min,max : " + minMax[0] + " : " + minMax[1]);
     out.close();
 
   }
@@ -375,10 +372,10 @@ public class Output {
       df.setMaximumFractionDigits(15);
 
 
-      out.println(this.getName() + " " + "A" + String.format("%03d", a.getnPletSize()) + " : " + df.format(statisticsA.getMean()) + " : " + df.format(statisticsA.getStdDev()));
-      out.println(this.getName() + " " + "T" + String.format("%03d", a.getnPletSize()) + " : " + df.format(statisticsT.getMean()) + " : " + df.format(statisticsT.getStdDev()));
-      out.println(this.getName() + " " + "G" + String.format("%03d", a.getnPletSize()) + " : " + df.format(statisticsG.getMean()) + " : " + df.format(statisticsG.getStdDev()));
-      out.println(this.getName() + " " + "C" + String.format("%03d", a.getnPletSize()) + " : " + df.format(statisticsC.getMean()) + " : " + df.format(statisticsC.getStdDev()));
+      out.println(this.getSeqId() + " " + "A" + String.format("%03d", a.getnPletSize()) + " : " + df.format(statisticsA.getMean()) + " : " + df.format(statisticsA.getStdDev()));
+      out.println(this.getSeqId() + " " + "T" + String.format("%03d", a.getnPletSize()) + " : " + df.format(statisticsT.getMean()) + " : " + df.format(statisticsT.getStdDev()));
+      out.println(this.getSeqId() + " " + "G" + String.format("%03d", a.getnPletSize()) + " : " + df.format(statisticsG.getMean()) + " : " + df.format(statisticsG.getStdDev()));
+      out.println(this.getSeqId() + " " + "C" + String.format("%03d", a.getnPletSize()) + " : " + df.format(statisticsC.getMean()) + " : " + df.format(statisticsC.getStdDev()));
     }
     out.close();
   }
@@ -410,7 +407,7 @@ public class Output {
       df.setMaximumFractionDigits(15);
 
 
-      out.println(this.getName() + " " + String.format("%03d", a.getnPletSize()) + " : " + df.format(mean) + " : " + df.format(standardErrorOfTheMean));
+      out.println(this.getSeqId() + " " + String.format("%03d", a.getnPletSize()) + " : " + df.format(mean) + " : " + df.format(standardErrorOfTheMean));
     }
     out.close();
 
@@ -445,10 +442,10 @@ public class Output {
     double frequencyAT = (frequencyA - frequencyT) / (frequencyA + frequencyT);
     double frequencyGC = (frequencyC - frequencyG) / (frequencyC + frequencyG);
 
-    outAT.println(this.getName() + ";" + frequencyAT);
+    outAT.println(this.getSeqId() + ";" + frequencyAT);
     outAT.close();
 
-    outGC.println(this.getName() + ";" + frequencyGC);
+    outGC.println(this.getSeqId() + ";" + frequencyGC);
     outGC.close();
   }
 
@@ -464,7 +461,7 @@ public class Output {
       SVGGraphics2D g2 = new SVGGraphics2D(600, 400);
       Rectangle r = new Rectangle(0, 0, 600, 400);
       w.getChart().draw(g2, r);
-      File f = new File(getOutputPath(name, "BoxWhisker") + w.getTitle() + "SVGBoxWhisker.svg");
+      File f = new File(getOutputPath(seqId, "BoxWhisker") + w.getTitle() + "SVGBoxWhisker.svg");
       if (!f.exists()) {
         f.getParentFile().mkdirs();
       }
@@ -478,7 +475,7 @@ public class Output {
    * @throws FileNotFoundException
    */
   private void createTexOutput() throws FileNotFoundException {
-    File fileTex = new File(getOutputPath(name, "Latex") + "table.tex");
+    File fileTex = new File(getOutputPath(seqId, "Latex") + "table.tex");
     fileTex.getParentFile().mkdirs();
 
     PrintWriter tex = new PrintWriter(fileTex);
@@ -492,7 +489,7 @@ public class Output {
    * @throws FileNotFoundException
    */
   private void createHTMLOutput() throws FileNotFoundException {
-    File file = new File(getOutputPath(name, "HTML") + "output.html");
+    File file = new File(getOutputPath(seqId, "HTML") + "output.html");
     file.getParentFile().mkdirs();
 
     PrintWriter out = new PrintWriter(file);
@@ -506,11 +503,11 @@ public class Output {
    * @throws FileNotFoundException
    */
   private void createExcelOutput() throws FileNotFoundException {
-//        File file = new File(getOutputPath(name, "Excel") + "output.xls");
+//        File file = new File(getOutputPath(seqId, "Excel") + "output.xls");
 //        file.getParentFile().mkdirs();
 
     Excel e = new Excel(getAsTable(), analyses);
-    e.writeFile(getOutputPath(name, "Excel") + "output.xls");
+    e.writeFile(getOutputPath(seqId, "Excel") + "output.xls");
   }
 
   /**
@@ -525,7 +522,7 @@ public class Output {
       SVGGraphics2D g2 = new SVGGraphics2D(600, 400);
       Rectangle r = new Rectangle(0, 0, 600, 400);
       s.getChart().draw(g2, r);
-      File f = new File(getOutputPath(name, "Scatterplot") + s.getTitle() + "SVGScatterPlot.svg");
+      File f = new File(getOutputPath(seqId, "Scatterplot") + s.getTitle() + "SVGScatterPlot.svg");
       if (!f.exists()) {
         f.getParentFile().mkdirs();
       }
@@ -534,9 +531,9 @@ public class Output {
   }
 
   /**
-   * returns an output path depending on the output type and species name
+   * returns an output path depending on the output type and species seqId
    *
-   * @param name name of the species
+   * @param name seqId of the species
    * @param type type of the output
    * @return
    */

@@ -15,7 +15,8 @@ import java.util.List;
  * Oryza sativa Japonica Group DNA, chromosome 12, complete sequence, cultivar: Nipponbare
  * https://www.ncbi.nlm.nih.gov/nuccore/AP008218.2
  * <p>
- * So the name and a link to the file in its own line, as many as desired
+ * So the name and a link to the file in its own line, as many as desired.
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  */
 public class BatchGenbankDownload {
   public static void main(String[] args) throws IOException {

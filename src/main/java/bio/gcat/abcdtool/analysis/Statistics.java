@@ -8,6 +8,7 @@ import java.util.Map;
 
 /**
  * A wrapper for Apache Maths.
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  */
 public class Statistics {
   double[] data;

@@ -4,27 +4,24 @@ import bio.gcat.abcdtool.sequences.reader.Element;
 
 import java.util.*;
 
-// Refactored into NPletAnalysis class, so we can have the nPletSize size saved
-// instead of recalculating it
+/**
+ * TODO documentation
+ * Refactored into NPletAnalysis class, so we can have
+ * the nPletSize size saved instead of recalculating it.
+ *
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
+ */
 public class NPletAnalysis {
   /**
    * Full genetic sequence.
    */
   private String sequence;
 
-  public String getSequence() {
-    return sequence;
-  }
-
   /**
    * Size of the n-plet
    * TODO confirm by Ali
    */
   private int nPletSize;
-
-  public int getSequenceLength() {
-    return sequenceLength;
-  }
 
   /**
    * length of the sequence without the unknown bases
@@ -43,6 +40,12 @@ public class NPletAnalysis {
    */
   private int[] frequencies;
 
+  /**
+   * TODO docs
+   *
+   * @param sequence
+   * @param nPletSize
+   */
   public NPletAnalysis(String sequence, int nPletSize) {
     if (sequence.length() / 2 < nPletSize) {
       throw new IllegalArgumentException("n-plet size is too big (probably).");
@@ -51,6 +54,14 @@ public class NPletAnalysis {
     this.nPletSize = nPletSize;
     this.frequencies = calculateFrequencyArray();
     this.frequenciesMap = calculateFrequenciesFast(frequencies);
+  }
+
+  public String getSequence() {
+    return sequence;
+  }
+
+  public int getSequenceLength() {
+    return sequenceLength;
   }
 
   /**
@@ -142,9 +153,9 @@ public class NPletAnalysis {
    * Counts the relative frequencies much faster than using a HashMap
    * <p>
    * the array is formatted in this way:
-   * PN(A1), PN(T1),PN(G1),PN(C1),PN(A2),...
+   * PN(A1), PN(T1), PN(G1), PN(C1), PN(A2),...
    *
-   * @return int[] with the Frequencies
+   * @return int[] with the frequencies.
    */
   public int[] calculateFrequencyArray() {
     char[] bases = {'A', 'T', 'G', 'C'};
@@ -153,10 +164,10 @@ public class NPletAnalysis {
     int counter = 0;
     char[] sequenceArray = sequence.toCharArray();
 
-    for (char c : sequenceArray) {
+    for (char base : sequenceArray) {
       int pos = 0;
       boolean skipper = false;
-      switch (c) {
+      switch (base) {
         case 'A':
           pos = 0;
           break;
@@ -178,17 +189,21 @@ public class NPletAnalysis {
       } else {
         sequenceLength++;
       }
-      map[(counter % nPletSize) * differentKeys + pos] = map[(counter % nPletSize) * differentKeys + pos] + 1;
+      map[(counter % nPletSize) * differentKeys + pos] =
+              map[(counter % nPletSize) * differentKeys + pos] + 1;
       counter = (counter + 1);
     }
     return map;
   }
 
-
+  /**
+   * TODO docs
+   *
+   * @return
+   */
   public Map<Element, Integer> getFrequencies() {
     return frequenciesMap;
   }
-
 
   public Map<Element, Integer> calculateFrequencies() {
 
@@ -223,8 +238,6 @@ public class NPletAnalysis {
       frequencies.put(e, map[i]);
     }
     return frequencies;
-
-
   }
 
   public int getnPletSize() {
@@ -233,10 +246,11 @@ public class NPletAnalysis {
 
   /**
    * Return all frequencies of a specific base in all nPletSize sizes
-   * and all positions
+   * and all positions.
    *
    * @param a the base that should be analyzed
-   * @return a double array returning all the frequencies of base a in every position of every nPletSize size
+   * @return a double array returning all the frequencies of base
+   * in every position of every nPletSize size.
    */
   public double[] getFrequencies(char a) {
     List<Double> frequencies = new ArrayList<>();
@@ -248,11 +262,6 @@ public class NPletAnalysis {
     double[] values = frequencies.stream().mapToDouble(d -> d).toArray(); //identity function, Java unboxes automatically to get the double value
 
     return values;
-//        return frequencies;
-  }
-
-  public void setSequence(String sequence) {
-    this.sequence = sequence;
   }
 
   /**

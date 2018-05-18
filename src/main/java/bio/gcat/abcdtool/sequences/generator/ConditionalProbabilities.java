@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 /**
  * Creates a matrix of conditional probabilities.
+ * TODO This is quite a simple helper class -> move into another
+ * class?
+ * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  */
 public class ConditionalProbabilities {
 
