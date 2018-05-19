@@ -16,12 +16,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Analyze class for command line execution of the ABCD tool.
+ * Analyzer class for command line execution of the ABCD tool.
  *
  * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
  * @author Markus Gumbel (m.gumbel@hs-mannheim.de)
  */
-public class Analyze {
+public class Analyzer {
   public static void main(String[] args) throws IOException {
 
     long sTime = System.currentTimeMillis();
@@ -88,7 +88,7 @@ public class Analyze {
       long size = Long.valueOf(sizeAsString);
       String method = "normal";
       if (line.hasOption("normal")) {
-        method = "method";
+        method = "normal";
       }
       if (line.hasOption("part")) {
         method = "part";
@@ -133,9 +133,9 @@ public class Analyze {
         // ----------------------------------------
       } else {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("Analyzer",
-                "Analyzing n-plets in a DNA sequence.",
-                options, "More infos at www.gcat.bio.");
+        formatter.printHelp("java -cp <abcd-tool-*-jar-with-dependencies.jar> bio.gcat.abcdtool.main.Analyzer <options>",
+                "Analyzing n-plets in a DNA sequence. Options:",
+                options, "More infos at http://www.gcat.bio.");
         return;
       }
     } catch (ParseException exp) {
@@ -161,7 +161,7 @@ public class Analyze {
   }
 
   /**
-   * Analyze the sequence by splitting it into 1/n chunks
+   * Analyzer the sequence by splitting it into 1/n chunks
    *
    * @param name
    * @param sequence

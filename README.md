@@ -1,12 +1,12 @@
 README
 
 Execution
-`bio.gcat.abcdtool.main.Analyze` is the main program for analyzing
+`bio.gcat.abcdtool.main.Analyzer` is the main program for analyzing
 a single sequence.
 `bio.gcat.abcdtool.main.BatchAnalyze` analyzes a batch of sequences.
 
 Usage:
-`bio.gcat.abcdtool.main.Analyze` has several options:
+`bio.gcat.abcdtool.main.Analyzer` has several options:
 `Analyze 
  (-file <seq>|((-rnd <deftype>|-rnd <type> -rndfile <rseq>) <size>) 
  -method <method>`
