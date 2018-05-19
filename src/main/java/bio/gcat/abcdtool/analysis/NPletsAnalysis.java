@@ -1,6 +1,8 @@
 package bio.gcat.abcdtool.analysis;
 
 import bio.gcat.abcdtool.output.Output;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
  */
 public class NPletsAnalysis {
 
+  private static Logger logger = LoggerFactory.getLogger(NPletsAnalysis.class);
   private String seqId;
   private String seq;
   private List<Integer> tupleSizes;
@@ -44,19 +47,19 @@ public class NPletsAnalysis {
     Output output = new Output(seqId);
 
     for (int nPletSize : getNPletSizes()) {
-      System.out.println("Analyzing n-plet size " + nPletSize + " ...");
+      logger.trace("Analyzing n-plet size " + nPletSize + " ...");
 
       //TODO: REMOVE THIS FOR THE ANALYSIS WITHOUT REMOVING N
       // sequence = StringUtils.stripStart(sequence,"N"); //remove first sequenceN
 
       NPletAnalysis analysis = new NPletAnalysis(seq, nPletSize);
-      System.out.println(analysis.getSequenceLength());
-      System.out.println("Analyzing n-plet size " + nPletSize + " done.");
+      logger.trace("size: " + analysis.getSequenceLength());
+      logger.trace("Analyzing n-plet size " + nPletSize + " done.");
       output.addAnalysis(analysis);
       // TODO really needed? Seems to be a bug.
       // Clear up some memory - running out of heap space otherwise:
       // analysis.setSequence(null);
-      // System.out.println("done with " + j + "it took : " + (System.currentTimeMillis() - timeNow) + "ms");
+      // logger.info("done with " + j + "it took : " + (System.currentTimeMillis() - timeNow) + "ms");
     }
     try {
       output.createOutputs();

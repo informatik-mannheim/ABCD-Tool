@@ -7,6 +7,8 @@ import bio.gcat.abcdtool.sequences.reader.FastFastaLoader;
 import org.apache.commons.cli.*;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.template.Sequence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +24,13 @@ import java.util.Set;
  * @author Markus Gumbel (m.gumbel@hs-mannheim.de)
  */
 public class Analyzer {
+
+  private static Logger logger;
+
   public static void main(String[] args) throws IOException {
+
+    System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
+    logger  = LoggerFactory.getLogger(Analyzer.class);
 
     long sTime = System.currentTimeMillis();
     Options options = new Options(); // Command line options.
@@ -75,7 +83,7 @@ public class Analyzer {
     List<Integer> tupleSizes = Arrays.asList(1, 2, 3, 4, 5,
             6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 50);
     */
-    List<Integer> tupleSizes = Arrays.asList(1, 3, 25);
+    List<Integer> tupleSizes = Arrays.asList(1, 3, 25, 50, 100);
 
     // Create the parser:
     CommandLineParser parser = new DefaultParser();
@@ -95,7 +103,7 @@ public class Analyzer {
       }
 
       if (line.hasOption("fasta")) {
-        System.out.println("Method: sequence like in Fasta file");
+        logger.info("Method: sequence like in Fasta file");
         String filePath = line.getOptionValue("fasta");
         Map<String, Sequence<NucleotideCompound>> entries =
                 loadFastaFile(filePath);
@@ -106,14 +114,20 @@ public class Analyzer {
           analyze(seqId, sequence, tupleSizes, method);
         }
         // ----------------------------------------
-      } else if (line.hasOption("randomInitial")) {
-        System.out.println("Method: random initial; Human Chr. 1 ");
+      } else if (line.hasOption("rndInit")) {
+        logger.info("Method: random initial; Human Chr. 1 ");
         String seqId = "RndInit";
         String sequence = new RandomSeqStringGenerator().randomSeqString(size);
         analyze(seqId, sequence, tupleSizes, method);
         // ----------------------------------------
-      } else if (line.hasOption("randomConditionalFromFile")) {
-        String filePath = line.getOptionValue("randomConditionalFromFile");
+      } else if (line.hasOption("rndCond")) {
+        logger.info("Method: random conditional; Human Chr. 1 ");
+        String seqId = "RndCond";
+        String sequence = new RandomSeqStringGenerator().rndCondSeqString(size, false);
+        analyze(seqId, sequence, tupleSizes, method);
+        // ----------------------------------------
+      } else if (line.hasOption("rndCondFile")) {
+        String filePath = line.getOptionValue("rndCondFile");
         System.out.println("Method: random conditional from file " +
                 filePath);
         Map<String, Sequence<NucleotideCompound>> entries =
@@ -142,7 +156,7 @@ public class Analyzer {
       // Oops, something went wrong:
       System.err.println("Parsing failed.  Reason: " + exp.getMessage());
     }
-    System.out.println("Done in " + ((System.currentTimeMillis() - sTime) / 1000) + " seconds.");
+    logger.info("Done in " + ((System.currentTimeMillis() - sTime) / 1000) + " seconds.");
   }
 
   private static void analyze(String seqId, String sequence,
@@ -150,7 +164,7 @@ public class Analyzer {
                               String method) {
     switch (method) {
       case "normal":
-        System.out.println("Id: " + seqId + ", size: " + sequence.length());
+        logger.info("Id: " + seqId + ", size: " + sequence.length());
         NPletsAnalysis npa = new NPletsAnalysis(seqId, sequence, tupleSizes);
         npa.analyze();
         break;
@@ -191,7 +205,7 @@ public class Analyzer {
     Map<String, Sequence<NucleotideCompound>> entries =
             fastaFile.fastaEntries();
     double msec = (System.currentTimeMillis() - sTime) / (1.0 * entries.size());
-    System.out.println("|entries| = " + entries.size() + " (" + msec + " ms/read)");
+    logger.info("|entries| = " + entries.size() + " (" + msec + " ms/read)");
     return entries;
   }
 }

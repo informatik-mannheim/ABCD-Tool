@@ -89,16 +89,16 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.14</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.14</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.biojava/biojava-core -->
         <dependency>
             <groupId>org.biojava</groupId>
             <artifactId>biojava-core</artifactId>
             <version>4.2.8</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -117,11 +117,13 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.7</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>com.github.haifengl</groupId>
             <artifactId>smile-core</artifactId>
             <version>1.5.0</version>
         </dependency>
+        -->
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
