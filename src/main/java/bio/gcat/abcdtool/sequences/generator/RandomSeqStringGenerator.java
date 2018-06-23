@@ -17,7 +17,7 @@ public class RandomSeqStringGenerator {
           {20, 23, 36, 21},
           {10, 37, 32, 22}
   };
-  private static double[][] condProbabilitiesHuman1 = {
+  public static double[][] condProbabilitiesHuman1 = {
           {32.654629485847264, 24.52450263153206, 17.292732418078985, 25.52813546454169},
           {28.77818791311597, 25.963261582628183, 21.08700437255217, 24.171546131703675},
           {34.89394017933991, 4.94258422999162, 25.942695290228157, 34.22078030044031},
@@ -72,7 +72,7 @@ public class RandomSeqStringGenerator {
 
   // TODO : change from boolean to int or enum
   // TODO: gcIsland is not used!
-  public String rndCondSeqString(long length, boolean cgIsland) {
+  public String rndCondSeqString(long length) {
     double[][] conditionalProb = new double[4][4];
     for (int i = 0; i < condProbabilitiesHuman1.length; i++) {
       for (int j = 0; j < condProbabilitiesHuman1.length; j++) {

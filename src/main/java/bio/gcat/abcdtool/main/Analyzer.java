@@ -123,7 +123,7 @@ public class Analyzer {
       } else if (line.hasOption("rndCond")) {
         logger.info("Method: random conditional; Human Chr. 1 ");
         String seqId = "RndCond";
-        String sequence = new RandomSeqStringGenerator().rndCondSeqString(size, false);
+        String sequence = new RandomSeqStringGenerator().rndCondSeqString(size);
         analyze(seqId, sequence, tupleSizes, method);
         // ----------------------------------------
       } else if (line.hasOption("rndCondFile")) {
