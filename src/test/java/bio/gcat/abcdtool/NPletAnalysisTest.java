@@ -1,8 +1,8 @@
 package bio.gcat.abcdtool;
 
-import bio.gcat.abcdtool.analysis.Analysis;
-import bio.gcat.abcdtool.sequences.readsequence.Element;
-import bio.gcat.abcdtool.sequences.readsequence.FastFastaLoader;
+import bio.gcat.abcdtool.analysis.NPletAnalysis;
+import bio.gcat.abcdtool.sequences.reader.Element;
+import bio.gcat.abcdtool.sequences.reader.FastFastaLoader;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.template.Sequence;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AnalysisTest {
+public class NPletAnalysisTest {
 
     @Test
     public void getFrequenciesComparison() {
@@ -29,7 +29,7 @@ public class AnalysisTest {
         Set<Map.Entry<String, Sequence<NucleotideCompound>>> g = entries.entrySet();
         for (Map.Entry<String, Sequence<NucleotideCompound>> map : g) {
             String sequence = map.getValue().getSequenceAsString();
-            Analysis analysis = new Analysis(sequence, 100);
+            NPletAnalysis analysis = new NPletAnalysis(sequence, 100);
 
             Map<Element, Integer> map1 = analysis.calculateFrequencies();
             Map<Element, Integer> map2 =
@@ -55,13 +55,13 @@ public class AnalysisTest {
     @org.junit.Before
     public void setUp() throws Exception {
         sequence = "AATTGGCCAA";
-        a = new Analysis(sequence, 1);
-        b = new Analysis(sequence, 2);
+        a = new NPletAnalysis(sequence, 1);
+        b = new NPletAnalysis(sequence, 2);
 
     }
 
-    Analysis a;
-    Analysis b;
+    NPletAnalysis a;
+    NPletAnalysis b;
     String sequence;
 
     @org.junit.After
@@ -126,8 +126,8 @@ public class AnalysisTest {
 
     @org.junit.Test
     public void getTupel() {
-        assertEquals(a.getTupel(), 1);
-        assertEquals(b.getTupel(), 2);
+        assertEquals(a.getnPletSize(), 1);
+        assertEquals(b.getnPletSize(), 2);
     }
 
     @org.junit.Test

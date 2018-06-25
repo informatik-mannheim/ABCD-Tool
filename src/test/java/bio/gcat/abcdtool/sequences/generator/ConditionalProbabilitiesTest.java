@@ -1,16 +1,16 @@
-package bio.gcat.abcdtool.sequences.generatesequence;
+package bio.gcat.abcdtool.sequences.generator;
 
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 
-public class createConditionalProbabiltiesTest {
+public class ConditionalProbabilitiesTest {
 
     @Test
     public void createCondProabiltiesTest() {
         String sequence = "ACCCCAAACC";
-        double[][] condProb = new createConditionalProbabilities().createConditionalProbbabilityMatrix("ACCCCAAACC");
+        double[][] condProb = new ConditionalProbabilities().createConditionalProbabilityMatrix("ACCCCAAACC");
         assertEquals(condProb[0][0], 0.5, 0.001);
         assertEquals(condProb[0][2], 0.5, 0.001);
         assertEquals(condProb[2][0], 0.2, 0.001);
