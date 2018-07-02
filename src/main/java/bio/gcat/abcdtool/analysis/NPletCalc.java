@@ -95,6 +95,8 @@ public class NPletCalc {
           break;
         case 'T':
         case 't':
+        case 'U':
+        case 'u':
           freqs[BASES.T.idx][pos]++;
           break;
         case 'C':
@@ -116,15 +118,21 @@ public class NPletCalc {
     int idx = BASES.UNKNOWN.idx;
     switch (base) {
       case 'A':
+      case 'a':
         idx = BASES.A.idx;
         break;
       case 'T':
+      case 't':
+      case 'U':
+      case 'u':
         idx = BASES.T.idx;
         break;
       case 'C':
+      case 'c':
         idx = BASES.C.idx;
         break;
       case 'G':
+      case 'g':
         idx = BASES.G.idx;
     }
     return idx;
@@ -138,7 +146,7 @@ public class NPletCalc {
   }
 
   private enum BASES {
-    A('A', 0), T('T', 1), C('C', 2), G('G', 3), UNKNOWN('N', 4);
+    A('A', 0), T('T', 1), U('U', 1), C('C', 2), G('G', 3), UNKNOWN('N', 4);
 
     private char base;
     private int idx;
