@@ -1,37 +1,42 @@
 package bio.gcat.abcdtool.sequences.generator;
 
-import java.util.Arrays;
+import bio.gcat.abcdtool.sequences.BaseEnum;
 
 /**
  * Creates a matrix of conditional probabilities.
  * TODO This is quite a simple helper class -> move into another
  * class?
+ * TODO static?
  * @author Ali Karpuzoglu (ali.karpuzoglu@gmail.com)
+ * @author Markus Gumbel (m.gumbel@hs-mannheim.de)
  */
 public class ConditionalProbabilities {
 
   /**
-   * Creates a matrix of conditional probabilities.
+   * Creates a matrix of conditional probabilities P(N | M) where
+   * N and M are the bases A, T(U), C, G and N. N is an unknown base.
+   * The matrix has 5 rows and columns. The row and column labels are
+   * A, T(U), C, G and N. N are the rows, M the columns.
    * @param sequence
-   * @return
+   * @return Matrix.
    */
   public double[][] createConditionalProbabilityMatrix(String sequence) {
-    // TODO more documentation. Src copied?
-    int[][] table = new int[4][4];
-    char[] sequenceArray = sequence.toCharArray();
-    for (int i = 0; i < sequenceArray.length - 1; i++) {
-      char current = sequenceArray[i];
-      char next = sequenceArray[i + 1];
-      int first = getPosition(current);
-      int second = getPosition(next);
-
-      if (first == -1 || second == -1) {
-        continue;
-      }
-      table[first][second]++;
+    if (sequence.length() < 2) {
+      throw new IllegalArgumentException("Sequence must have at least two bases.");
     }
 
-    double[][] frequency = new double[4][4];
+    int[][] table = new int[5][5]; // 4 bases + unknown.
+    char[] sequenceArray = sequence.toCharArray();
+    for (int i = 0; i < sequenceArray.length - 1; i++) {
+      char currentBase = sequenceArray[i];
+      char nextBase = sequenceArray[i + 1];
+      int firstIdx = BaseEnum.baseToIndex(currentBase);
+      int secondIdx = BaseEnum.baseToIndex(nextBase);
+
+      table[firstIdx][secondIdx]++;
+    }
+
+    double[][] frequency = new double[5][5];
     for (int i = 0; i < frequency.length; i++) {
       int[] column = table[i];
       int sum = 0;
@@ -42,32 +47,6 @@ public class ConditionalProbabilities {
         frequency[i][j] = (double) column[j] / sum;
       }
     }
-    System.out.println(Arrays.toString(frequency[0]));
-    System.out.println(Arrays.toString(frequency[1]));
-    System.out.println(Arrays.toString(frequency[2]));
-    System.out.println(Arrays.toString(frequency[3]));
     return frequency;
-  }
-
-  /**
-   * only works for AGCT (not for the tables we had in our Output)
-   *
-   * @param c a char
-   * @return A=0, G=1, C=2,T=3
-   */
-  private int getPosition(char c) {
-    if (c - 'A' == 0) {
-      return 0;
-    }
-    if (c - 'G' == 0) {
-      return 1;
-    }
-    if (c - 'C' == 0) {
-      return 2;
-    }
-    if (c - 'T' == 0) {
-      return 3;
-    }
-    return -1; // I would throw an exception but that would take 5 years
   }
 }

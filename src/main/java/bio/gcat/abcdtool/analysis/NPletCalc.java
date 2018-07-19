@@ -1,5 +1,7 @@
 package bio.gcat.abcdtool.analysis;
 
+import bio.gcat.abcdtool.sequences.BaseEnum;
+
 /**
  * @author Markus Gumbel (m.gumbel@hs-mannheim.de)
  */
@@ -22,7 +24,7 @@ public class NPletCalc {
   public NPletCalc(String sequence, int nPletSize) {
     this.sequence = sequence;
     this.nPletSize = nPletSize;
-    freqs = new long[BASES.values().length][nPletSize];
+    freqs = new long[BaseEnum.values().length][nPletSize];
     nPletCount = sequence.length() / nPletSize;
     calc();
   }
@@ -33,7 +35,7 @@ public class NPletCalc {
 
   public long getFrequency(char base, int pos) {
     checkPosRange(pos);
-    int idx = baseToIndex(base);
+    int idx = BaseEnum.baseToIndex(base);
     return freqs[idx][pos];
   }
 
@@ -66,10 +68,10 @@ public class NPletCalc {
 
   public String toString() {
     StringBuffer sb = new StringBuffer();
-    for (BASES base : BASES.values()) {
-      sb.append(base.base + ": ");
+    for (BaseEnum base : BaseEnum.values()) {
+      sb.append(base.getBase() + ": ");
       for (int p = 0; p < nPletSize; p++) {
-        sb.append(getRelativeFrequency(base.base, p) + "; ");
+        sb.append(getRelativeFrequency(base.getBase(), p) + "; ");
       }
       sb.append("\n");
     }
@@ -91,69 +93,33 @@ public class NPletCalc {
       switch (base) {
         case 'A':
         case 'a':
-          freqs[BASES.A.idx][pos]++;
+          freqs[BaseEnum.A.getIndex()][pos]++;
           break;
         case 'T':
         case 't':
         case 'U':
         case 'u':
-          freqs[BASES.T.idx][pos]++;
+          freqs[BaseEnum.T.getIndex()][pos]++;
           break;
         case 'C':
         case 'c':
-          freqs[BASES.C.idx][pos]++;
+          freqs[BaseEnum.C.getIndex()][pos]++;
           break;
         case 'G':
         case 'g':
-          freqs[BASES.G.idx][pos]++;
+          freqs[BaseEnum.G.getIndex()][pos]++;
           break;
         default:
-          freqs[BASES.UNKNOWN.idx][pos]++;
+          freqs[BaseEnum.UNKNOWN.getIndex()][pos]++;
       }
       i++;
     }
-  }
-
-  private int baseToIndex(char base) {
-    int idx = BASES.UNKNOWN.idx;
-    switch (base) {
-      case 'A':
-      case 'a':
-        idx = BASES.A.idx;
-        break;
-      case 'T':
-      case 't':
-      case 'U':
-      case 'u':
-        idx = BASES.T.idx;
-        break;
-      case 'C':
-      case 'c':
-        idx = BASES.C.idx;
-        break;
-      case 'G':
-      case 'g':
-        idx = BASES.G.idx;
-    }
-    return idx;
   }
 
   private void checkPosRange(int pos) {
     if (pos < 0 || pos > nPletSize) {
       throw new IllegalArgumentException("Position must be between 0 and " +
               (nPletSize - 1));
-    }
-  }
-
-  private enum BASES {
-    A('A', 0), T('T', 1), U('U', 1), C('C', 2), G('G', 3), UNKNOWN('N', 4);
-
-    private char base;
-    private int idx;
-
-    BASES(char base, int idx) {
-      this.base = base;
-      this.idx = idx;
     }
   }
 }
