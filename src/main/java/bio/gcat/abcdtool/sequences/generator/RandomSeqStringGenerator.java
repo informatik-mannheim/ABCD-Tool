@@ -1,5 +1,7 @@
 package bio.gcat.abcdtool.sequences.generator;
 
+import static bio.gcat.abcdtool.sequences.BaseEnum.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,44 +30,62 @@ public class RandomSeqStringGenerator {
    * Creates a random sequence using a conditional probabilities
    * matrix.
    *
-   * @param length                   Size of the sequence.
-   * @param conditionalProbabilities
+   * @param length    Size of the sequence.
+   * @param condProbs Matrix of size 5 x 5 defining the probabilities.
+   *                  Rows and columns have the
+   *                  bases in order A, T(U), C, G, N where
+   *                  N is an unknown base.
    * @return
    */
   public String rndCondSeqString(long length,
-                                 double[][] conditionalProbabilities) {
+                                 double[][] condProbs) {
     StringBuilder s = new StringBuilder();
-    String digit = randomSeqString(1);
-    s.append(digit);
+    // We always start with a real base:
+    char base = randomSeqString(1).charAt(0);
+    s.append(base);
     for (int i = 0; i < length - 1; i++) {
       double rndNumber = Math.random();
 
-      int currentIndex = 0;
-      switch (s.charAt(i)) {
+      int currentIndex;
+      switch (base) {
         case 'A':
-          currentIndex = 0;
-          break;
-        case 'G':
-          currentIndex = 1;
-          break;
-        case 'C':
-          currentIndex = 2;
+        case 'a':
+          currentIndex = A.getIndex();
           break;
         case 'T':
-          currentIndex = 3;
+        case 't':
+          currentIndex = T.getIndex();
           break;
-
+        case 'C':
+        case 'c':
+          currentIndex = C.getIndex();
+          break;
+        case 'G':
+        case 'g':
+          currentIndex = G.getIndex();
+          break;
+        default:
+          currentIndex = UNKNOWN.getIndex();
       }
-      double[] theseValues = conditionalProbabilities[currentIndex];
-      if (rndNumber < theseValues[0]) {
-        s.append("A");
-      } else if (rndNumber < theseValues[0] + theseValues[1]) {
-        s.append("G");
-      } else if (rndNumber < theseValues[0] + theseValues[1] + theseValues[2]) {
-        s.append("C");
+      double[] condProbsForBase = condProbs[currentIndex];
+      if (rndNumber < condProbsForBase[A.getIndex()]) {
+        base = 'A';
+      } else if (rndNumber < condProbsForBase[A.getIndex()] +
+              condProbsForBase[T.getIndex()]) {
+        base = 'T';
+      } else if (rndNumber < condProbsForBase[A.getIndex()] +
+              condProbsForBase[T.getIndex()] +
+              condProbsForBase[C.getIndex()]) {
+        base = 'C';
+      } else if (rndNumber < condProbsForBase[A.getIndex()] +
+              condProbsForBase[T.getIndex()] +
+              condProbsForBase[C.getIndex()] +
+              condProbsForBase[G.getIndex()]) {
+        base = 'G';
       } else {
-        s.append("T");
+        base = 'N';
       }
+      s.append(base);
     }
     return s.toString();
   }

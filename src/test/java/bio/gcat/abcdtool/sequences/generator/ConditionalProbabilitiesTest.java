@@ -5,8 +5,12 @@ import org.junit.Test;
 import static bio.gcat.abcdtool.sequences.BaseEnum.A;
 import static bio.gcat.abcdtool.sequences.BaseEnum.C;
 import static bio.gcat.abcdtool.sequences.BaseEnum.T;
+import static bio.gcat.abcdtool.sequences.BaseEnum.UNKNOWN;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Markus Gumbel (m.gumbel@hs-mannheim.de)
+ */
 public class ConditionalProbabilitiesTest {
 
   @Test(expected = IllegalArgumentException.class)
@@ -35,6 +39,19 @@ public class ConditionalProbabilitiesTest {
   }
 
   @Test
+  public void condProabiltiesTestUnknown() {
+    String sequence = "ANNA";
+    // A->N: 1 or 1/1
+    // N->A: 1 or 1/2
+    // N->N: 1 or 1/2
+    ConditionalProbabilities cp = new ConditionalProbabilities();
+    double[][] condProb = cp.createConditionalProbabilityMatrix(sequence);
+    assertEquals(1, condProb[A.getIndex()][UNKNOWN.getIndex()], 0.001);
+    assertEquals(1.0 / 2.0, condProb[UNKNOWN.getIndex()][A.getIndex()], 0.001);
+    assertEquals(1.0 / 2.0, condProb[UNKNOWN.getIndex()][UNKNOWN.getIndex()], 0.001);
+  }
+
+  @Test
   public void condProabiltiesTestMany1() {
     String sequence = "AAATTT";
     // A->A: 2 or 2/3
@@ -43,9 +60,9 @@ public class ConditionalProbabilitiesTest {
 
     ConditionalProbabilities cp = new ConditionalProbabilities();
     double[][] condProb = cp.createConditionalProbabilityMatrix(sequence);
-    assertEquals(2.0/3.0, condProb[A.getIndex()][A.getIndex()], 0.001);
-    assertEquals(1.0/3.0, condProb[A.getIndex()][T.getIndex()], 0.001);
-    assertEquals(2.0/2.0, condProb[T.getIndex()][T.getIndex()], 0.001);
+    assertEquals(2.0 / 3.0, condProb[A.getIndex()][A.getIndex()], 0.001);
+    assertEquals(1.0 / 3.0, condProb[A.getIndex()][T.getIndex()], 0.001);
+    assertEquals(2.0 / 2.0, condProb[T.getIndex()][T.getIndex()], 0.001);
   }
 
   @Test
