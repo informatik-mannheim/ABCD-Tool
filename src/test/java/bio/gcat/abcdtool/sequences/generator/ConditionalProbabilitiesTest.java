@@ -14,19 +14,19 @@ import static org.junit.Assert.assertEquals;
 public class ConditionalProbabilitiesTest {
 
   @Test(expected = IllegalArgumentException.class)
-  public void condProabiltiesTestEmpty() {
+  public void condProbabilitiesTestEmpty() {
     ConditionalProbabilities cp = new ConditionalProbabilities();
     double[][] condProb = cp.createConditionalProbabilityMatrix("");
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void condProabiltiesTestSingle() {
+  public void condProbabilitiesTestSingle() {
     ConditionalProbabilities cp = new ConditionalProbabilities();
     double[][] condProb = cp.createConditionalProbabilityMatrix("A");
   }
 
   @Test
-  public void condProabiltiesTestTwo() {
+  public void condProbabilitiesTestTwo() {
     String sequence = "AA";
     ConditionalProbabilities cp = new ConditionalProbabilities();
     double[][] condProb = cp.createConditionalProbabilityMatrix(sequence);
@@ -39,7 +39,7 @@ public class ConditionalProbabilitiesTest {
   }
 
   @Test
-  public void condProabiltiesTestUnknown() {
+  public void condProbabilitiesTestUnknown() {
     String sequence = "ANNA";
     // A->N: 1 or 1/1
     // N->A: 1 or 1/2
@@ -52,7 +52,7 @@ public class ConditionalProbabilitiesTest {
   }
 
   @Test
-  public void condProabiltiesTestMany1() {
+  public void condProbabilitiesTestMany1() {
     String sequence = "AAATTT";
     // A->A: 2 or 2/3
     // A->T: 1 or 1/3

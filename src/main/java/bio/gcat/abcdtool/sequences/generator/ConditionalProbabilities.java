@@ -25,7 +25,7 @@ public class ConditionalProbabilities {
       throw new IllegalArgumentException("Sequence must have at least two bases.");
     }
 
-    int[][] table = new int[5][5]; // 4 bases + unknown.
+    int[][] absFreq = new int[5][5]; // 4 bases + unknown.
     char[] sequenceArray = sequence.toCharArray();
     for (int i = 0; i < sequenceArray.length - 1; i++) {
       char currentBase = sequenceArray[i];
@@ -33,20 +33,20 @@ public class ConditionalProbabilities {
       int firstIdx = BaseEnum.baseToIndex(currentBase);
       int secondIdx = BaseEnum.baseToIndex(nextBase);
 
-      table[firstIdx][secondIdx]++;
+      absFreq[firstIdx][secondIdx]++;
     }
 
-    double[][] frequency = new double[5][5];
-    for (int i = 0; i < frequency.length; i++) {
-      int[] column = table[i];
+    double[][] relFreq = new double[5][5];
+    for (int i = 0; i < relFreq.length; i++) {
+      int[] row = absFreq[i];
       int sum = 0;
-      for (int value : column) {
+      for (int value : row) {
         sum += value;
       }
-      for (int j = 0; j < column.length; j++) {
-        frequency[i][j] = (double) column[j] / sum;
+      for (int j = 0; j < row.length; j++) {
+        relFreq[i][j] = (double) row[j] / sum;
       }
     }
-    return frequency;
+    return relFreq;
   }
 }
